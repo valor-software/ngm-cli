@@ -1,0 +1,10 @@
+{
+  "name": "ngm-cli",
+  "version": "*",
+  "peerDependencies": {
+    "typescript": "*",
+    "reflect-metadata": "*",
+    "@angular/tsc-wrapped": "*",
+    "@angular/compiler-cli": "*"
+  }
+}

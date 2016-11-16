@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Simple way to manage typescipt | angular2 submodules from one repository",
+  "bin": {
+    "ngm": "src/build.js"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha"
