@@ -1,0 +1,28 @@
+{
+  "name": "npm-submodules",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Simple way to manage typescipt | angular2 submodules from one repository",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/valor-software/npm-submodules.git"
+  },
+  "keywords": [
+    "npm",
+    "node",
+    "typescript",
+    "angular",
+    "angular2",
+    "angularcli"
+  ],
+  "author": "Dmitriy Shekhovtsov <valorkin@gmail.com> (https://twitter.com/valorkin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/valor-software/npm-submodules/issues"
+  },
+  "homepage": "https://github.com/valor-software/npm-submodules#readme"
+}
