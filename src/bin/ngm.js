@@ -5,6 +5,7 @@
 // todo: add watch mode for ngc
 // todo: add ts hack of output
 // todo: add copy task (readme and licence by default)
+// todo: add assets copy
 const rootFolder = require('./../utils/helpers').ROOT;
 const Listr = require('listr');
 const execa = require('execa');

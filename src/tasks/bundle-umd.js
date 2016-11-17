@@ -19,7 +19,7 @@ function bundleUmd(dir, moduleConf, minify) {
     root: path.resolve(rootFolder, moduleConf.root),
     entry: path.resolve(rootFolder, moduleConf.root, moduleConf.main),
     output: path.resolve(dir, bundlesDir),
-    tsconfig:path.join(moduleConf.root, moduleConf.tsconfig || 'tsconfig.json')
+    tsconfig: path.join(moduleConf.root, moduleConf.tsconfig || 'tsconfig.json')
   });
 
   if (minify) {
@@ -34,12 +34,19 @@ function bundleUmd(dir, moduleConf, minify) {
 
   const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 
-  webpackCompiler.apply(new ProgressPlugin({ profile: false }));
+  webpackCompiler.apply(new ProgressPlugin({profile: false}));
 
   return new Promise((resolve, reject) => {
     webpackCompiler.run((err, stats) => {
       if (err) {
+        if (stats) {
+          process.stdout.write(stats.toString(webpackOutputOptions) + '\n');
+        }
         return reject(err);
+      }
+
+      if (stats.hasErrors()) {
+        process.stdout.write(stats.toString(webpackOutputOptions) + '\n');
       }
 
       return stats.hasErrors() ? reject() : resolve();

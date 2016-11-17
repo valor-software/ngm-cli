@@ -23,11 +23,32 @@ module.exports = (config) => {
     externals: [/^\@angular\//, /^rxjs\//],
 
     module: {
-      rules: [{
-        test: /\.ts$/,
-        loader: `awesome-typescript-loader?declaration=false&tsconfig=${config.tsconfig}`,
-        exclude: [/\.e2e\.ts$/]
-      }]
+      rules: [
+        {
+          test: /\.ts$/,
+          loader: `awesome-typescript-loader?declaration=false&tsconfig=${config.tsconfig}`,
+          exclude: [/\.e2e\.ts$/]
+        },
+        // in main, load css as raw text
+        {
+          // exclude: styles,
+          test: /\.css$/,
+          loaders: ['raw-loader', 'postcss-loader']
+        }, {
+          // exclude: styles,
+          test: /\.styl$/,
+          loaders: ['raw-loader', 'postcss-loader', 'stylus-loader']
+        },
+        {
+          // exclude: styles,
+          test: /\.less$/,
+          loaders: ['raw-loader', 'postcss-loader', 'less-loader']
+        }, {
+          // exclude: styles,
+          test: /\.scss$|\.sass$/,
+          loaders: ['raw-loader', 'postcss-loader', 'sass-loader']
+        }
+      ]
     },
 
     plugins: [
