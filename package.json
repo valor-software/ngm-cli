@@ -4,7 +4,7 @@
   "private": false,
   "description": "Simple way to manage typescipt | angular2 submodules from one repository",
   "bin": {
-    "ngm": "src/build.js"
+    "ngm": "src/bin/ngm.js"
   },
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,9 @@
     "cpy": "4.0.1",
     "del": "2.2.2",
     "execa": "0.5.0",
-    "listr": "0.7.0"
+    "listr": "0.7.0",
+    "meow": "3.7.0",
+    "update-notifier": "1.0.2"
   },
   "devDependencies": {
     "reflect-metadata": "0.1.8",
