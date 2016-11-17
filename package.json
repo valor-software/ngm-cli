@@ -1,7 +1,7 @@
 {
   "name": "npm-submodules",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Simple way to manage typescipt | angular2 submodules from one repository",
   "bin": {
     "ngm": "src/build.js"
@@ -27,5 +27,22 @@
   "bugs": {
     "url": "https://github.com/valor-software/npm-submodules/issues"
   },
-  "homepage": "https://github.com/valor-software/npm-submodules#readme"
+  "homepage": "https://github.com/valor-software/npm-submodules#readme",
+  "dependencies": {
+    "cpy": "4.0.1",
+    "del": "2.2.2",
+    "listr": "0.7.0"
+  },
+  "devDependencies": {
+    "reflect-metadata": "0.1.8",
+    "webpack": "2.1.0-beta.25",
+    "@angular/tsc-wrapped": "^0.4.0",
+    "typescript": "^2.0.8",
+    "@angular/compiler": "^2.2.0",
+    "@angular/compiler-cli": "^2.2.0",
+    "@angular/core": "^2.2.0",
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "^0.6.21"
+
+  }
 }

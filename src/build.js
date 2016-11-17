@@ -4,6 +4,7 @@
 // todo: use commander
 // todo: add watch mode for ngc
 // todo: add ts hack of output
+// todo: add copy task (readme and licence by default)
 const rootFolder = require('./utils/helpers').ROOT;
 const defaultConfigName = 'angular-cli.json';
 
