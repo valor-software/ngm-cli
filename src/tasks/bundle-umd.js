@@ -42,11 +42,6 @@ function bundleUmd(dir, moduleConf, minify) {
         return reject(err);
       }
 
-      if (stats.hash !== lastHash) {
-        lastHash = stats.hash;
-        process.stdout.write(stats.toString(webpackOutputOptions) + '\n');
-      }
-
       return stats.hasErrors() ? reject() : resolve();
     });
   });

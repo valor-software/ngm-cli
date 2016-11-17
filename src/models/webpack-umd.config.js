@@ -36,6 +36,13 @@ module.exports = (config) => {
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
         config.root
       )
-    ]
+    ],
+    // Hide webpack output because its noisy.
+    // noInfo: true,
+    // Also prevent chunk and module display output, cleaner look. Only emit errors.
+    stats: 'errors-only',
+    devServer: {
+      stats: 'errors-only'
+    },
   };
-}
+};
