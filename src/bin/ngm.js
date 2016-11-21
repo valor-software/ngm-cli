@@ -6,6 +6,10 @@
 // todo: add ts hack of output
 // todo: add copy task (readme and licence by default)
 // todo: add assets copy
+// todo: version/link/publish
+// todo: write help
+// todo: meow read wrong pkg version?
+// todo: pkg copy description, repository and licence
 const rootFolder = require('./../utils/helpers').ROOT;
 const Listr = require('listr');
 const execa = require('execa');
