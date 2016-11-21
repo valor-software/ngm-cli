@@ -47,7 +47,7 @@ const outDir = path.resolve(rootFolder, moduleConf.outDir);
 
 // todo: single run <--> watch
 
-const bundle = require('./../tasks/bundle-umd').run;
+const bundle = require('./../tasks/bundle-umd.task').run;
 
 const tasks = new Listr([
   // {
@@ -75,15 +75,16 @@ const tasks = new Listr([
   // },
   {
     title: `Cleaning destination folder: ${outDir}`,
-    task: () => require('./../tasks/clean').run(outDir)
+    task: () => require('./../tasks/clean.task').run(outDir)
   },
   {
     title: 'Building with ngc',
-    task: () => require('./../tasks/build-ngc').run(moduleConf)
+    task: () => require('./../tasks/build-ngc.task').run(moduleConf)
   },
   {
     title: 'Copying package.json ',
-    task: () => require('./../tasks/copy-package-json').run(outDir, moduleConf)
+    task: () => require('./../tasks/build-pkg-json.task')
+      .run(rootFolder, moduleConf.root, outDir)
   },
   {
     title: 'Bundling umd version',
