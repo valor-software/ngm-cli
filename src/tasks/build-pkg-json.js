@@ -5,7 +5,7 @@ const readPkg = require('./../utils/read-package-json').run;
 const mergePkg = require('./../utils/merge-package-json').run;
 const writePkg = require('./../utils/write-package-json').run;
 
-function copyPackageJson(dir, moduleConf) {
+function buildPkgJson(dir, moduleConf) {
   // read base package.json
   const basePkg = readPkg(rootFolder);
   // read package.json in module root folder
@@ -16,4 +16,4 @@ function copyPackageJson(dir, moduleConf) {
   return writePkg(dir, pkg);
 }
 
-module.exports.run = copyPackageJson;
+module.exports.run = buildPkgJson;
