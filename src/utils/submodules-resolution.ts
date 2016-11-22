@@ -1,10 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-
-const {pkgName} = require('constants');
-
-module.exports.run = run;
-module.exports.listDirs = listDirs;
+const tsconfig = require('tsconfig');
+const readPkg = require('read-pkg');
+import { pkgName } from './constants';
 
 /**
  * Will try to find package.json in src folder
@@ -12,7 +10,7 @@ module.exports.listDirs = listDirs;
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-function run(project) {
+export function run(project: string): Promise<string[]> {
   // check package json in project root
   if (fs.existsSync(path.resolve(project, pkgName))) {
     return Promise.resolve([path.resolve(project)]);
@@ -26,11 +24,26 @@ function run(project) {
     ));
 }
 
-function listDirs(project) {
+export function listDirs(project: string): Promise<string[]> {
   return Promise.resolve(
-    fs
-      .readdirSync(path.resolve(project))
-      .map(file => path.resolve(project, file))
-      .filter(file => fs.statSync(file).isDirectory())
-  );
+    [project].concat(
+      fs
+        .readdirSync(path.resolve(project))
+        .filter(file => fs.statSync(path.resolve(project, file)).isDirectory())
+        .map(dir => path.join(project, dir))
+    ));
+}
+
+export function isModuleRoot(dir: string) {
+  if (fs.existsSync(path.join(dir, pkgName))) {
+    return !!tsconfig.resolveSync(dir);
+  }
+  return false;
+}
+
+export function getOptions(dir:string): any {
+  return {
+    tsconfig: tsconfig.loadSync(dir),
+    pkg: readPkg.sync(dir)
+  }
 }

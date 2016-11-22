@@ -1,12 +1,12 @@
 'use strict';
 import path = require('path');
-const tsConf = require('../utils/read-tsconfig-json');
 
-module.exports.run = run;
+import { getTsOutDir } from '../utils/read-tsconfig-json';
+import { clean } from './clean.task';
 
-function run(project, outDir?) {
-  return tsConf
-    .getTsOutDir(project, outDir)
-    .then((dir) => require('./clean.task')
-      .run(path.resolve(project, dir)));
+export function run(project, outDir?) {
+  return getTsOutDir(project, outDir)
+    .then((dir) => clean(path.resolve(project, dir)));
 }
+
+export {run as cleanTs};
