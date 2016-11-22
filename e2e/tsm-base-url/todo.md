@@ -1,0 +1,1 @@
+2. add sample with nested module name, like `@angular-cli/ast-tools`

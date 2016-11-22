@@ -1,3 +1,4 @@
+//todo: add copyright of @sinder
 'use strict';
 const semver = require('semver');
 

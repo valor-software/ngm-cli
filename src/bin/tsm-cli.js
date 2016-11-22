@@ -3,22 +3,23 @@
 'use strict';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
-// const version = require('./lib/version');
-const ui = require('../lib/ui');
-// const np = require('./');
 
 const cli = meow(`
-	Usage
-	  $ tsm <command> [options]
-	Options
-	  -p DIRECTORY, --project DIRECTORY   Compile the project in the given directory
-	  -w, --watch    Watch input files
-	Examples
-	  $ tsm build
+  Usage
+    $ tsm <command> [options]
+  Commands
+    build - build typescript project
+  Options
+    -p DIRECTORY, --project DIRECTORY   Compile the project in the given directory
+    -w, --watch     Watch input files
+    -v, --verbose   Enable verbose mode
+  Examples
+    $ tsm build
 `, {
   alias: {
     p: 'project',
-    w: 'watch'
+    w: 'watch',
+    v: 'verbose'
   }
 });
 

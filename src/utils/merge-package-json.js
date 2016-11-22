@@ -1,3 +1,5 @@
+//todo: add setting of cross-dependencies versions
+//todo: add readme field
 const _ = require('lodash');
 
 const fieldsToCopy = 'main version description main module typings browser keywords author license repository'.split(' ');
