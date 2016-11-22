@@ -12,6 +12,7 @@
     "skipDefaultLibCheck": true,
     "stripInternal": true,
     "noEmitOnError": false,
+    "removeComments": false,
     "lib": ["dom", "es6"],
     "typeRoots": [
       "../node_modules/@types",
