@@ -1,9 +1,6 @@
 'use strict';
-const path = require('path');
+import path = require('path');
 const tsconfig = require('tsconfig');
-
-module.exports.getTsConfig = getTsConfig;
-module.exports.getTsOutDir = getTsOutDir;
 
 /**
  * Resolves projects outDir in abs dist path
@@ -11,7 +8,7 @@ module.exports.getTsOutDir = getTsOutDir;
  * @param outDir
  * @returns {*}
  */
-function getTsOutDir(project, outDir) {
+export function getTsOutDir(project, outDir) {
   if (outDir) {
     return Promise.resolve(path.resolve(outDir));
   }
@@ -23,6 +20,6 @@ function getTsOutDir(project, outDir) {
     ));
 }
 
-function getTsConfig(project) {
+export function getTsConfig(project) {
   return tsconfig.load(project);
 }

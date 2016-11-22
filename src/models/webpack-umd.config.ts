@@ -1,6 +1,6 @@
 'use strict';
 
-const webpack = require('webpack');
+import webpack = require('webpack');
 module.exports = (config) => {
   return {
     devtool: 'source-map',

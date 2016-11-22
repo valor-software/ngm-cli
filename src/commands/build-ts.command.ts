@@ -4,20 +4,21 @@
 // todo: watching seems to be more complicated...
 // todo: copy readme.md
 // todo: better error messages
-const path = require('path');
-const Listr = require('listr');
-const chokidar = require('chokidar');
+import path = require('path');
+import Listr = require('listr');
+import chokidar = require('chokidar');
 
-module.exports.run = run;
+const clean = require('../tasks/clean-ts.task') .run;
+const buildTs = require('../tasks/build-ts.task') .run;
 
-const clean = require('../tasks/clean-ts.task').run;
-const buildTs = require('../tasks/build-ts.task').run;
-
-function run(cli) {
+export function run(cli) {
   // convert cli options to b
   const {project, watch, verbose} = cli.flags;
+  const srcs = require('../utils/find-submodules').run(project);
+  console.log(srcs);
 
-  function runForAllSubModules(fn) {
+  return ;
+/*  function runForAllSubModules(fn) {
     return require('../utils/find-submodules').run(project)
     // now we have sub projects with paths relative to root
       .then(dirs => dirs.map(dir => path.join(project, dir)))
@@ -30,7 +31,7 @@ function run(cli) {
     },
     {
       title: "Build package.json",
-      task: () => require('../tasks/build-pkg-json-recursively.task').run(project)
+      task: () => require('../tasks/build-pkg-json-recursively.task') .run(project)
     },
     {
       title: 'Build TypeScript',
@@ -63,5 +64,5 @@ function run(cli) {
         console.log(`Changes detected: ${event}`);
         runTasks();
       });
-  }
+  }*/
 }

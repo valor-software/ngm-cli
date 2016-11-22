@@ -43,3 +43,7 @@ jspm_packages
 .classpath
 *.launch
 .settings/
+
+dist
+
+**/*.js

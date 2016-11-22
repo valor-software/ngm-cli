@@ -1,8 +1,8 @@
 'use strict';
-const path = require('path');
+import path = require('path');
 
 const findSubmodules = require('../utils/find-submodules').run;
-const buildPkgJson = require('./build-pkg-json.task').run;
+const buildPkgJson = require('./build-pkg-json.task') .run;
 const getTsOutDir = require('../utils/read-tsconfig-json').getTsOutDir;
 module.exports.run = run;
 

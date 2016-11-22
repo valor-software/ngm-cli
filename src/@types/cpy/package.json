@@ -1,0 +1,5 @@
+{
+  "name": "listr",
+  "typings": "index.d.ts",
+  "main": "index.js"
+}

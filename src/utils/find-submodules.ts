@@ -1,9 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import fs = require('fs');
+import path = require('path');
 
-const {pkgName} = require('../utils/constants');
-
-module.exports.run = run;
+import { pkgName } from './constants';
 
 /**
  * Will try to find package.json in src folder
@@ -11,7 +9,7 @@ module.exports.run = run;
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-function run(project) {
+export function run(project) {
   // check package json in project root
   if (fs.existsSync(path.resolve(project, pkgName))) {
     return Promise.resolve([path.resolve(project)]);

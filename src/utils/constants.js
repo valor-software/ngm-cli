@@ -1,1 +1,0 @@
-module.exports.pkgName = 'package.json';
