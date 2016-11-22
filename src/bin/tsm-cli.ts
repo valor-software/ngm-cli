@@ -27,7 +27,7 @@ updateNotifier({pkg: cli.pkg}).notify();
 
 // show help and exit by default
 if (cli.input.length === 0) {
-  return cli.showHelp(0);
+  cli.showHelp(0);
 }
 
 Promise

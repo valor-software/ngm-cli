@@ -1,5 +1,5 @@
-const path = require('path');
-const root = require('../utils/helpers').ROOT;
+import path = require('path');
+import { ROOT } from '../utils/helpers';
 // const readPkg = require('./../utils/read-package-json').run;
 const mergePkg = require('./../utils/merge-package-json').run;
 // const writePkg = require('./../utils/write-package-json').run;
@@ -12,9 +12,9 @@ const writePkg = require('write-pkg');
  * @param src - abs path to project src folder
  * @param dist - abs path to project dist folder
  */
-function buildPkgJson(src, dist) {
+export function buildPkgJson(src, dist) {
   // read base package.json
-  const basePkg = readPkg.sync(root);
+  const basePkg = readPkg.sync(ROOT);
   // read package.json in module root folder
   const modulePkgPath = readPkg.sync(src);
   // merge packages
@@ -23,4 +23,4 @@ function buildPkgJson(src, dist) {
   return writePkg(dist, pkg);
 }
 
-module.exports.run = buildPkgJson;
+export { buildPkgJson as run };

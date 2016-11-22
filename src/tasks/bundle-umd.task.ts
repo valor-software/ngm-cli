@@ -1,5 +1,6 @@
-const path = require('path');
-const rootFolder = require('../utils/helpers').ROOT;
+import path = require('path');
+import {ROOT} from '../utils/helpers';
+// todo: move to constants and make it configurable
 const bundlesDir = 'bundles';
 
 // Configure build and output;
@@ -14,10 +15,10 @@ const webpackOutputOptions = {
 const webpack = require('webpack');
 
 function bundleUmd(dir, moduleConf, minify) {
-  const config = require('../models/webpack-umd.config.js')({
+  const config = require('../models/webpack-umd.config') ({
     name: !minify ? `${moduleConf.name}.umd` : `${moduleConf.name}.umd.min`,
-    root: path.resolve(rootFolder, moduleConf.root),
-    entry: path.resolve(rootFolder, moduleConf.root, moduleConf.main),
+    root: path.resolve(ROOT, moduleConf.root),
+    entry: path.resolve(ROOT, moduleConf.root, moduleConf.main),
     output: path.resolve(dir, bundlesDir),
     tsconfig: path.join(moduleConf.root, moduleConf.tsconfig || 'tsconfig.json')
   });
