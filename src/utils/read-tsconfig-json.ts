@@ -4,11 +4,8 @@ const tsconfig = require('tsconfig');
 
 /**
  * Resolves projects outDir in abs dist path
- * @param project
- * @param outDir
- * @returns {*}
  */
-export function getTsOutDir(project, outDir) {
+export function getTsOutDir(project: string, outDir: string): Promise<string> {
   if (outDir) {
     return Promise.resolve(path.resolve(outDir));
   }

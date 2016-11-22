@@ -1,3 +1,2 @@
 const del = require('del');
-
-module.exports.run = del;
+export {del as run, del as clean};

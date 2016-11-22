@@ -9,7 +9,7 @@ import { pkgName } from './constants';
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-export function run(project) {
+export function run(project: string): Promise<string[]> {
   // check package json in project root
   if (fs.existsSync(path.resolve(project, pkgName))) {
     return Promise.resolve([path.resolve(project)]);
@@ -23,3 +23,5 @@ export function run(project) {
       .map(dir => path.relative(project, dir))
   );
 }
+
+export { run as findSubmodules };
