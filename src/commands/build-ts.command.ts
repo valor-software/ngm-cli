@@ -2,8 +2,10 @@
 // todo: create `concurrent` list of `npm link` for submodules
 // todo: build pkg.json recursively, only first level of folders
 // todo: watching seems to be more complicated...
-// todo: copy readme.md
+// todo: copy readme.md and .md
 // todo: better error messages
+// todo: handle src/dist dirs properly
+// todo: allow to skip adding module sub name?
 import path = require('path');
 import Listr = require('listr');
 import chokidar = require('chokidar');
@@ -13,14 +15,32 @@ import chokidar = require('chokidar');
 import { listDirs, isModuleRoot, getOptions } from '../utils/submodules-resolution';
 
 export function run(cli) {
-  // convert cli options to b
   const {project, watch, verbose} = cli.flags;
 
   // form
   listDirs(project)
     .then(dirs => dirs.filter(dir => isModuleRoot(dir)))
-    .then(dirs => dirs.map(dir => Object.assign(getOptions(dir), {cli, project, watch, verbose})))
+    .then(dirs => dirs.map(dir => Object.assign(getOptions(dir), {cli, dir})))
+    .then(opts => opts.map(opt => handleOptions(opt)))
     .then(srcs => console.log(srcs));
+
+  function handleOptions(opt:any):any {
+    console.log('module dir', path.relative(project, opt.dir));
+    // create out dir path relative to root
+    const src = opt.dir;
+    const tsOutDir = opt.tsconfig.config.compilerOptions.outDir;
+    const moduleDir = path.relative(project, opt.dir);
+    const dist = tsOutDir.indexOf(moduleDir) == -1 ? path.join(tsOutDir, moduleDir) : tsOutDir;
+    const outDir = path.relative(process.cwd(), path.resolve(src, dist));
+
+    debugger
+    return {
+      src: opt.dir,
+      dist: outDir
+    };
+  }
+
+  function getOutDir(tsconfig, ) {}
 
   return;
   /*  function runForAllSubModules(fn) {
