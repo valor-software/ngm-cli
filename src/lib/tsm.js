@@ -4,7 +4,6 @@ module.exports.main = main;
 // command - string, cli.inputs[0]
 // cli - meow object
 function main(command, cli) {
-  console.log(`running ${command}`);
   // todo: can I generate this?
   return getCommand(command).run(cli);
 }
