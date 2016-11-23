@@ -9,18 +9,23 @@ const cli = meow(`
     $ tsm <command> [options]
   Commands
     build - build typescript project
+    link  - run 'npm link' in each submodule dist folder
   Options
     -p DIRECTORY, --project DIRECTORY   Compile the project in the given directory
+  Build options
     -w, --watch     Watch input files
     -v, --verbose   Enable verbose mode
     --no-clean      Skip cleaning of dist folders
+    --local,        Use local(relative paths) for resolving submodules cross dependencies
+      --use-local-dependencies alias
   Examples
     $ tsm build
 `, {
   alias: {
     p: 'project',
     w: 'watch',
-    v: 'verbose'
+    v: 'verbose',
+    local: 'use-local-dependencies alias'
   }
 });
 
@@ -35,6 +40,6 @@ Promise
   .resolve()
   .then(() => require('../lib/tsm').main(cli.input[0], cli))
   .catch(err => {
-    console.error(`\n${err.message}`);
+    console.error(`\n`, err);
     process.exit(1);
   });
