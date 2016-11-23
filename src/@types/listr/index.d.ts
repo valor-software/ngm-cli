@@ -5,9 +5,9 @@ declare module 'listr' {
     skip?: Function;
   }
   declare interface ListrOptions {
-    concurrent: boolean;
-    renderer:string|Object;
-    showSubtasks:boolean;
+    concurrent?: boolean;
+    renderer?:string|Object;
+    showSubtasks?:boolean;
   }
   declare class Listr {
     constructor(tasks:ListrTask[], opts?:ListrOptions);

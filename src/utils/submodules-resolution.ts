@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
-const readPkg = require('read-pkg');
 import { pkgName } from './constants';
+import { ROOT } from './helpers';
 
 /**
  * Will try to find package.json in src folder
@@ -10,40 +10,44 @@ import { pkgName } from './constants';
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-export function run(project: string): Promise<string[]> {
-  // check package json in project root
-  if (fs.existsSync(path.resolve(project, pkgName))) {
-    return Promise.resolve([path.resolve(project)]);
-  }
-
-  return Promise.resolve(
-    listDirs(project).then(dirs =>
-      dirs.filter(dir => fs
-        .existsSync(path.resolve(dir, pkgName)))
-        .map(dir => path.relative(project, dir))
-    ));
+export function findSubmodules(project: string) {
+  return listDirs(project)
+    .then(dirs => dirs
+      .filter(dir => isModuleRoot(dir))
+      .map(dir => ({dir, tsconfig: tsconfig.loadSync(dir)}))
+      .map(opt => resolveSrcDist(project, opt))
+    );
 }
 
-export function listDirs(project: string): Promise<string[]> {
+function listDirs(project: string): Promise<string[]> {
   return Promise.resolve(
     [project].concat(
       fs
         .readdirSync(path.resolve(project))
-        .filter(file => fs.statSync(path.resolve(project, file)).isDirectory())
+        .filter(file => fs.statSync(path.resolve(project, file))
+          .isDirectory())
         .map(dir => path.join(project, dir))
     ));
 }
 
-export function isModuleRoot(dir: string) {
+function isModuleRoot(dir: string) {
   if (fs.existsSync(path.join(dir, pkgName))) {
     return !!tsconfig.resolveSync(dir);
   }
   return false;
 }
 
-export function getOptions(dir:string): any {
-  return {
-    tsconfig: tsconfig.loadSync(dir),
-    pkg: readPkg.sync(dir)
-  }
+function resolveSrcDist(project: string, opt): {src: string, dist: string, project: string} {
+  const tsOutDir = opt.tsconfig.config.compilerOptions.outDir;
+  const tsConfigDir = path.dirname(opt.tsconfig.path);
+  const relTsOutDir = path.relative(ROOT, path.resolve(tsConfigDir, tsOutDir));
+  const moduleDir = path.relative(project, opt.dir);
+  // tsc out dir
+  const dist = relTsOutDir.indexOf(moduleDir) == -1
+    ? path.join(relTsOutDir, moduleDir)
+    : relTsOutDir;
+  // submodule root
+  const src = opt.dir;
+  // tsconfig project
+  return {src, dist, project: path.relative(ROOT, tsConfigDir)};
 }
