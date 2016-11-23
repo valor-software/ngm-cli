@@ -1,94 +1,74 @@
 // todo: load from config project from
 // todo: create `concurrent` list of `npm link` for submodules
-// todo: build pkg.json recursively, only first level of folders
-// todo: watching seems to be more complicated...
 // todo: copy readme.md and .md
 // todo: better error messages
-// todo: handle src/dist dirs properly
-// todo: allow to skip adding module sub name?
 import path = require('path');
 import Listr = require('listr');
 import chokidar = require('chokidar');
-
-// import { cleanTs } from '../tasks/clean-ts.task';
-// import { buildTs } from '../tasks/build-ts.task';
-import { listDirs, isModuleRoot, getOptions } from '../utils/submodules-resolution';
+import { buildTs } from '../tasks/build-ts.task';
+import { del } from '../tasks/clean.task';
+import { findSubmodules } from '../utils/submodules-resolution';
+import { buildPkgJson } from '../tasks/build-pkg-json.task';
 
 export function run(cli) {
-  const {project, watch, verbose} = cli.flags;
+  const {project, watch, verbose, clean} = cli.flags;
+  return findSubmodules(project)
+    .then(opts => {
+      console.log(opts);
+      // 1. clean dist folders
+      // 2.1 merge pkg json
+      // 2.2 validate pkg (main, module, types)
+      // 2.3 write pkg
+      // 3. compile ts
+      const tasks = new Listr([
+        {
+          title: 'Clean TypeScript dist folders',
+          task: () => Promise.all(opts.map(opt => del(opt.dist))),
+          skip: () => !clean
+        },
+        {
+          title: "Build package.json",
+          task: () => Promise.all(opts.map(opt => buildPkgJson(opt.src, opt.dist)))
+        },
+        {
+          title: 'Build TypeScript',
+          task: () => Promise.all(opts
+            .map(opt => buildTs(opt.project, {retry: 1})
+              .catch(err => console.error(`\n${err.message}`)))
+          )
+        },
+      ], {renderer: verbose ? 'verbose' : 'default'});
 
-  // form
-  listDirs(project)
-    .then(dirs => dirs.filter(dir => isModuleRoot(dir)))
-    .then(dirs => dirs.map(dir => Object.assign(getOptions(dir), {cli, dir})))
-    .then(opts => opts.map(opt => handleOptions(opt)))
-    .then(srcs => console.log(srcs));
+      let isRunning = false;
 
-  function handleOptions(opt:any):any {
-    console.log('module dir', path.relative(project, opt.dir));
-    // create out dir path relative to root
-    const src = opt.dir;
-    const tsOutDir = opt.tsconfig.config.compilerOptions.outDir;
-    const moduleDir = path.relative(project, opt.dir);
-    const dist = tsOutDir.indexOf(moduleDir) == -1 ? path.join(tsOutDir, moduleDir) : tsOutDir;
-    const outDir = path.relative(process.cwd(), path.resolve(src, dist));
+      runTasks();
 
-    debugger
-    return {
-      src: opt.dir,
-      dist: outDir
-    };
-  }
+      if (watch) {
+        chokidar.watch(project, {ignored: /[\/\\]\./})
+          .on('change', (event) => {
+            console.log(`Changes detected: ${event}`);
+            runTasks();
+          });
+      }
 
-  function getOutDir(tsconfig, ) {}
+      return Promise.resolve();
 
-  return;
-  /*  function runForAllSubModules(fn) {
-   return require('../utils/find-submodules').run(project)
-   // now we have sub projects with paths relative to root
-   .then(dirs => dirs.map(dir => path.join(project, dir)))
-   .then(dirs => Promise.all(dirs.map(fn)))
-   }
-   const tasks = new Listr([
-   {
-   title: 'Clean TypeScript dist folder',
-   task: () => runForAllSubModules(dir => clean(path.resolve(dir)))
-   },
-   {
-   title: "Build package.json",
-   task: () => require('../tasks/build-pkg-json-recursively.task') .run(project)
-   },
-   {
-   title: 'Build TypeScript',
-   task: () => runForAllSubModules(dir => buildTs(dir, {retry: 1}))
-   },
-   ], {renderer: verbose ? 'verbose' : 'default'});
+      function runTasks() {
+        if (isRunning) {
+          return;
+        }
 
-   let isRunning = false;
+        isRunning = true;
+        return tasks.run(cli)
+          .then(() => {
+            isRunning = false;
+          })
+          .catch(err => {
+            console.error(`\n${err.message}`);
+            isRunning = false;
+          });
 
-   function runTasks() {
-   if (!isRunning) {
-   isRunning = true;
-   tasks.run(cli)
-   .then(() => {
-   isRunning = false;
-   })
-   .catch(err => {
-   console.error(`\n${err.message}`);
-   isRunning = false;
-   });
-
-   }
-   }
-
-   runTasks();
-
-   if (watch) {
-   chokidar.watch(project, {ignored: /[\/\\]\./})
-   .on('change', (event) => {
-   console.log(`Changes detected: ${event}`);
-   runTasks();
-   });
-   }*/
+      }
+    });
 }
 

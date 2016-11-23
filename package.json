@@ -8,6 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p src",
     "e2e1": "ts-node --project src src/bin/tsm-cli.ts build -p e2e/tsm-folders/src/",
     "test": "mocha",
     "try": "node src/tasks/build-ts.js"

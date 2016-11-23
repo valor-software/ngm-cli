@@ -13,6 +13,7 @@ const cli = meow(`
     -p DIRECTORY, --project DIRECTORY   Compile the project in the given directory
     -w, --watch     Watch input files
     -v, --verbose   Enable verbose mode
+    --no-clean      Skip cleaning of dist folders
   Examples
     $ tsm build
 `, {

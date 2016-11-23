@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/module-a",
+    "outDir": "../dist/module-c",
     "module": "commonjs",
     "target": "es5",
     "declaration" :true,

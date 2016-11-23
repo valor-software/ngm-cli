@@ -47,3 +47,4 @@ jspm_packages
 dist
 
 **/*.js
+**/*.js.map
