@@ -5,10 +5,11 @@
 import path = require('path');
 import Listr = require('listr');
 import chokidar = require('chokidar');
+import cpy = require('cpy');
 import { buildTs } from '../tasks/build-ts.task';
 import { del } from '../tasks/clean.task';
 import { findSubmodules } from '../utils/submodules-resolution';
-import { buildPkgJson } from '../tasks/build-pkg-json.task';
+import { buildPkgJson, buildPackages } from '../tasks/build-pkg-json.task';
 
 export function run(cli) {
   const {project, watch, verbose, clean} = cli.flags;
@@ -28,7 +29,8 @@ export function run(cli) {
         },
         {
           title: "Build package.json",
-          task: () => Promise.all(opts.map(opt => buildPkgJson(opt.src, opt.dist)))
+          // task: () => Promise.all(opts.map(opt => buildPkgJson(opt.src, opt.dist)))
+          task: () => buildPackages(opts, cli.pkg)
         },
         {
           title: 'Build TypeScript',
@@ -37,6 +39,10 @@ export function run(cli) {
               .catch(err => console.error(`\n${err.message}`)))
           )
         },
+        {
+          title: 'Copy md files and license',
+          task: () => Promise.all(opts.map(opt => cpy(['*.md', 'LICENSE'], opt.dist)))
+        }
       ], {renderer: verbose ? 'verbose' : 'default'});
 
       let isRunning = false;
@@ -71,4 +77,3 @@ export function run(cli) {
       }
     });
 }
-

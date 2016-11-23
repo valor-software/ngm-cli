@@ -1,8 +1,6 @@
 import path = require('path');
 import { ROOT } from '../utils/helpers';
-// const readPkg = require('./../utils/read-package-json').run;
 const mergePkg = require('./../utils/merge-package-json').run;
-// const writePkg = require('./../utils/write-package-json').run;
 // todo: replace
 const readPkg = require('read-pkg');
 const writePkg = require('write-pkg');
@@ -23,4 +21,12 @@ export function buildPkgJson(src, dist) {
   return writePkg(dist, pkg);
 }
 
-export { buildPkgJson as run };
+export function buildPackages(opts, basePkg) {
+  // 0. read base package.json
+  const basePkg = readPkg.sync(ROOT);
+  // 1. read all sub module packages
+  const optsPkg = opts.map(opt => Object.assign(opt, {pkg: readPkg.sync(opt.src)}))
+  // 2. include sub module versions in modules hash
+  // 3. merge packages
+  // 4. validate required fields in packages
+}
