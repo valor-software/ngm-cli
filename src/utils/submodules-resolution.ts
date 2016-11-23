@@ -1,8 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
+const readPkg = require('read-pkg');
 import { pkgName } from './constants';
 import { ROOT } from './helpers';
+
+export interface TsmOptions {
+  src: string;
+  dist: string;
+  project: string;
+  pkg: any;
+}
+
+// todo: order by cross dependencies
+// todo: add --use-local-dependencies alias --local
 
 /**
  * Will try to find package.json in src folder
@@ -10,12 +21,12 @@ import { ROOT } from './helpers';
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-export function findSubmodules(project: string) {
+export function findSubmodules(project: string, options: {local: boolean}) {
   return listDirs(project)
-    .then(dirs => dirs
+    .then(dirs => orderByCrossDeps(dirs
       .filter(dir => isModuleRoot(dir))
       .map(dir => ({dir, tsconfig: tsconfig.loadSync(dir)}))
-      .map(opt => resolveSrcDist(project, opt))
+      .map(opt => resolveOptions(project, opt)))
     );
 }
 
@@ -37,7 +48,7 @@ function isModuleRoot(dir: string) {
   return false;
 }
 
-function resolveSrcDist(project: string, opt): {src: string, dist: string, project: string} {
+function resolveOptions(project: string, opt): TsmOptions {
   const tsOutDir = opt.tsconfig.config.compilerOptions.outDir;
   const tsConfigDir = path.dirname(opt.tsconfig.path);
   const relTsOutDir = path.relative(ROOT, path.resolve(tsConfigDir, tsOutDir));
@@ -49,5 +60,14 @@ function resolveSrcDist(project: string, opt): {src: string, dist: string, proje
   // submodule root
   const src = opt.dir;
   // tsconfig project
-  return {src, dist, project: path.relative(ROOT, tsConfigDir)};
+  return {
+    src, dist,
+    project: path.relative(ROOT, tsConfigDir),
+    pkg: readPkg.sync(src)
+  };
+}
+
+function orderByCrossDeps(options: TsmOptions[]): TsmOptions[] {
+  const names = options.map(opt => opt.pkg.name);
+  return options;
 }

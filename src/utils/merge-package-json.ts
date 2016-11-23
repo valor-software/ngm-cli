@@ -7,19 +7,21 @@ const fieldsToCopy = 'main version description main module typings browser keywo
 // if dependencies duplicated they will be overwritten by each other
 const depsKeys = ['devDependencies', 'dependencies',  'peerDependencies'];
 
-function mergePackageJson(module, submodule) {
+export function mergePackageJson(data) {
+  const {base, module, localDependencies} = data;
   // read only needed fields from main package.json
-  const filteredBasePkg = _.pick(module, fieldsToCopy);
-  const dependenciesHash = _(module)
+  const filteredBasePkg = _.pick(base, fieldsToCopy);
+  let dependenciesHash = _(base)
     .pick(depsKeys)
     .reduce((memo, v) => Object.assign(memo, v), {});
+
+  dependenciesHash = Object.assign(dependenciesHash, localDependencies);
+
   // update sub module package.json dependencies versions
-  const newModulePkg = Object.assign(submodule, filteredBasePkg);
+  const newModulePkg = Object.assign(module, filteredBasePkg);
   _.each(depsKeys, (section) => {
     newModulePkg[section] = _.mapValues(newModulePkg[section], (version, dependency) => dependenciesHash[dependency]);
   });
 
   return newModulePkg;
 }
-
-module.exports.run = mergePackageJson;

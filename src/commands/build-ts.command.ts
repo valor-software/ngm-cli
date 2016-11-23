@@ -9,13 +9,12 @@ import cpy = require('cpy');
 import { buildTs } from '../tasks/build-ts.task';
 import { del } from '../tasks/clean.task';
 import { findSubmodules } from '../utils/submodules-resolution';
-import { buildPkgJson, buildPackages } from '../tasks/build-pkg-json.task';
+import { buildPkgs } from '../tasks/build-pkg-json.task';
 
 export function run(cli) {
-  const {project, watch, verbose, clean} = cli.flags;
-  return findSubmodules(project)
+  const {project, watch, verbose, clean, local} = cli.flags;
+  return findSubmodules(project, {local})
     .then(opts => {
-      console.log(opts);
       // 1. clean dist folders
       // 2.1 merge pkg json
       // 2.2 validate pkg (main, module, types)
@@ -25,12 +24,12 @@ export function run(cli) {
         {
           title: 'Clean TypeScript dist folders',
           task: () => Promise.all(opts.map(opt => del(opt.dist))),
-          skip: () => !clean
+          skip: () => clean === false
         },
         {
           title: "Build package.json",
           // task: () => Promise.all(opts.map(opt => buildPkgJson(opt.src, opt.dist)))
-          task: () => buildPackages(opts, cli.pkg)
+          task: () => buildPkgs(opts, cli.pkg)
         },
         {
           title: 'Build TypeScript',
