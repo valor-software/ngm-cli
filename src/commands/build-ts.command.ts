@@ -17,7 +17,7 @@ export function run(cli) {
     .then(opts => {
       // 1. clean dist folders
       // 2.1 merge pkg json
-      // 2.2 validate pkg (main, module, types)
+      // todo: 2.2 validate pkg (main, module, types fields)
       // 2.3 write pkg
       // 3. compile ts
       const tasks = new Listr([
@@ -29,7 +29,7 @@ export function run(cli) {
         {
           title: "Build package.json",
           // task: () => Promise.all(opts.map(opt => buildPkgJson(opt.src, opt.dist)))
-          task: () => buildPkgs(opts, cli.pkg)
+          task: () => buildPkgs(opts, {local})
         },
         {
           title: 'Build TypeScript',

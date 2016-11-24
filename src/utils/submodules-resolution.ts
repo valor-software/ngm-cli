@@ -12,7 +12,10 @@ export interface TsmOptions {
   dist: string;
   project: string;
   pkg: any;
-  crossCount?: number;
+  /**
+   * Array of local cross dependencies
+   * */
+  cross?: string[];
 }
 
 // todo: order by cross dependencies
@@ -70,28 +73,33 @@ function resolveOptions(project: string, opt): TsmOptions {
   };
 }
 
+// todo: split it in
+// 1. building cross dependencies
+// 2. sorting by cross dependencies count
+/**
+ * */
 function orderByCrossDeps(options: TsmOptions[]): TsmOptions[] {
   const pkgName = options.map(opt => opt.pkg.name);
   return options
     .map<TsmOptions>(option => {
-      let crossCount = 0;
+      option.cross = [];
       dependencyKeys.forEach(depKey => {
-        if (depKey in option.pkg) {
-          pkgName.forEach(name => {
-            if (name in option.pkg[depKey]) {
-              crossCount++;
-            }
-          });
+        if (!option.pkg[depKey]) {
+          return;
         }
+        pkgName.forEach(name => {
+          if (name in option.pkg[depKey]) {
+            option.cross.push(name);
+          }
+        });
       });
-      option.crossCount = crossCount;
       return option;
     })
     .sort((a: TsmOptions, b: TsmOptions) => {
-      if (a.crossCount === b.crossCount) {
-        return 0
+      if (a.cross.length === b.cross.length) {
+        return 0;
       }
 
-      return a.crossCount > b.crossCount ? 1 : -1;
+      return a.cross.length > b.cross.length ? 1 : -1;
     });
 }
