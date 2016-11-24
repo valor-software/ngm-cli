@@ -1,4 +1,4 @@
-import {pkgName,tsconfigName} from './constants';
+import {pkgFileName,tsconfigName} from './constants';
 
 
 export function tsOptionsResolver(project, options) {

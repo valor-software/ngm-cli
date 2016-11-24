@@ -15,7 +15,7 @@ const cli = meow(`
   Build options
     -w, --watch     Watch input files
     -v, --verbose   Enable verbose mode
-    --no-clean      Skip cleaning of dist folders
+    --clean         Cleaning dist folders
     --local,        Use local(relative paths) for resolving submodules cross dependencies
       --use-local-dependencies alias
   Examples
