@@ -27,7 +27,7 @@ export interface TsmOptions {
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-export function findSubmodules(project: string, options: {local: boolean}) {
+export function findSubmodules(project: string, options?: {local: boolean}) {
   return listDirs(project)
     .then(dirs => orderByCrossDeps(dirs
       .filter(dir => isModuleRoot(dir))

@@ -10,6 +10,7 @@
 // todo: write help
 // todo: meow read wrong pkg version?
 // todo: pkg copy description, repository and licence
+// todo: add command to upgrade ng2 dependencies
 import { ROOT } from '../utils/helpers';
 import Listr = require('listr');
 import cpy  = require ('cpy');
