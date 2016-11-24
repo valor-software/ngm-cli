@@ -18,7 +18,6 @@ export function run(cli) {
       const tasks = new Listr([
         {
           title: 'Link all submodules',
-          // task: () => Promise.all(opts.map(opt => npmLink(opt.dist)))
           task: () => {
             const linkingTasks = new Listr([
               ...opts.map(opt => ({

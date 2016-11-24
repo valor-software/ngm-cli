@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// todo: setting
+// todo: add support for config file
+// todo: add help per command (sample: tsm help build)
+// todo: move help to separate file
+
 'use strict';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
-
-// todo: add help per command (sample: tsm help build)
-// todo: move help to separate file
 
 const cli = meow(`
   Usage
@@ -14,6 +14,8 @@ const cli = meow(`
   Commands:
     ----------------------------------------------------------------
     build - build typescript projects
+      Usage:
+          $ tsm build -p src 
       Mandatory options:
         -p DIRECTORY,   Compile the project in the given directory
           --project DIRECTORY
@@ -25,10 +27,11 @@ const cli = meow(`
         --clean         Cleaning dist folders
                           It removes folder, so you will need to rerun commands like 'link', etc...
         
-      Usage:
-        $ tsm build -p src 
+      
     ----------------------------------------------------------------    
     link  - run 'npm link' in each submodule dist folder
+      Usage:
+          $ tsm link -p src
       Hint:
         'npm link' doesn't track adding new files, please rerun this command if file was added\removed
       Mandatory options:
@@ -36,11 +39,21 @@ const cli = meow(`
             --project DIRECTORY
       Optional options:
            --no-deep    By default local submodules will be linked to each other        
-      Usage:
-        $ tsm link -p src
+      
     ----------------------------------------------------------------
+    version - runs 'npm version <version>' in each submodule and than in root folder
+    Usage:
+        $ tsm version prerelease -p src
+    Mandatory options:
+        -m MESSAGE,             Commit message when creating a version commit
+          --message MESSAGE
+        --no-git-tag-version    Do not create a version commit and tag (applied only to root folder)
+    ----------------------------------------------------------------
+    init - updates root pkg scripts with required commands, adds tsm-readme.md
+    
 `, {
   alias: {
+    m: 'message',
     p: 'project',
     w: 'watch',
     v: 'verbose',

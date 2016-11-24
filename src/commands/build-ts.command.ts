@@ -2,6 +2,7 @@
 // todo: create `concurrent` list of `npm link` for submodules
 // todo: copy readme.md and .md
 // todo: better error messages
+// todo: replace promise.all with new Listr(...opts.map), see lint command for example
 import path = require('path');
 import Listr = require('listr');
 import chokidar = require('chokidar');
