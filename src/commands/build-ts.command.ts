@@ -24,7 +24,7 @@ export function run(cli) {
         {
           title: 'Clean TypeScript dist folders',
           task: () => Promise.all(opts.map(opt => del(opt.dist))),
-          skip: () => clean === false
+          skip: () => !clean
         },
         {
           title: "Build package.json",

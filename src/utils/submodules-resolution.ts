@@ -2,14 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
 const readPkg = require('read-pkg');
-import { pkgName } from './constants';
+import { pkgFileName, dependencyKeys } from './constants';
 import { ROOT } from './helpers';
 
+// todo: export to some typings
+// todo: add documentation
 export interface TsmOptions {
   src: string;
   dist: string;
   project: string;
   pkg: any;
+  crossCount?: number;
 }
 
 // todo: order by cross dependencies
@@ -42,7 +45,7 @@ function listDirs(project: string): Promise<string[]> {
 }
 
 function isModuleRoot(dir: string) {
-  if (fs.existsSync(path.join(dir, pkgName))) {
+  if (fs.existsSync(path.join(dir, pkgFileName))) {
     return !!tsconfig.resolveSync(dir);
   }
   return false;
@@ -68,6 +71,27 @@ function resolveOptions(project: string, opt): TsmOptions {
 }
 
 function orderByCrossDeps(options: TsmOptions[]): TsmOptions[] {
-  const names = options.map(opt => opt.pkg.name);
-  return options;
+  const pkgName = options.map(opt => opt.pkg.name);
+  return options
+    .map<TsmOptions>(option => {
+      let crossCount = 0;
+      dependencyKeys.forEach(depKey => {
+        if (depKey in option.pkg) {
+          pkgName.forEach(name => {
+            if (name in option.pkg[depKey]) {
+              crossCount++;
+            }
+          });
+        }
+      });
+      option.crossCount = crossCount;
+      return option;
+    })
+    .sort((a: TsmOptions, b: TsmOptions) => {
+      if (a.crossCount === b.crossCount) {
+        return 0
+      }
+
+      return a.crossCount > b.crossCount ? 1 : -1;
+    });
 }
