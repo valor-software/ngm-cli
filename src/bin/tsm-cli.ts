@@ -4,22 +4,41 @@
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
 
+// todo: add help per command (sample: tsm help build)
+// todo: move help to separate file
+
 const cli = meow(`
   Usage
     $ tsm <command> [options]
-  Commands
-    build - build typescript project
+    
+  Commands:
+    ----------------------------------------------------------------
+    build - build typescript projects
+      Mandatory options:
+        -p DIRECTORY,   Compile the project in the given directory
+          --project DIRECTORY
+      Optional options (default: false):
+        --no-local      Use version numbers from local submodules when building package.json,
+                          usually needed only for publish command
+        -w, --watch     Watch input files
+        -v, --verbose   Enable verbose mode
+        --clean         Cleaning dist folders
+                          It removes folder, so you will need to rerun commands like 'link', etc...
+        
+      Usage:
+        $ tsm build -p src 
+    ----------------------------------------------------------------    
     link  - run 'npm link' in each submodule dist folder
-  Options
-    -p DIRECTORY, --project DIRECTORY   Compile the project in the given directory
-  Build options
-    -w, --watch     Watch input files
-    -v, --verbose   Enable verbose mode
-    --clean         Cleaning dist folders
-    --local,        Use local(relative paths) for resolving submodules cross dependencies
-      --use-local-dependencies alias
-  Examples
-    $ tsm build
+      Hint:
+        'npm link' doesn't track adding new files, please rerun this command if file was added\removed
+      Mandatory options:
+          -p DIRECTORY,   Compile the project in the given directory
+            --project DIRECTORY
+      Optional options:
+           --no-deep    By default local submodules will be linked to each other        
+      Usage:
+        $ tsm link -p src
+    ----------------------------------------------------------------
 `, {
   alias: {
     p: 'project',
