@@ -61,6 +61,12 @@ const tempBranch = `testing${Date.now()}`;
 const currentBranch = execa.shellSync(`git branch | sed -n '/\* /s///p'`).stdout;
 
 function before() {
+  const status = execa.shellSync('git status --porcelain');
+  console.log(status.stdout);
+  if (status && status.stdout !== '') {
+    throw new Error('Unclean working tree. Commit or stash changes first.');
+  }
+
   execa.shellSync(`git checkout -B ${tempBranch}`);
 }
 function after() {
@@ -79,9 +85,14 @@ try {
   e2eFolders.forEach(folder =>
     commands.forEach(opts =>
       opts.args.forEach(arg => {
-        const shellCommand = 'node ./dist/bin/tsm-cli.js ' + [opts.command, '-p', folder].concat(...arg).join(' ');
+        const shellCommand = 'node ./dist/bin/tsm-cli.js ' +
+          [opts.command, '-p', folder]
+            .concat(...arg)
+            .join(' ');
         console.time(`Running: ${shellCommand}`);
+
         const res = execa.shellSync(shellCommand);
+
         console.timeEnd(`Running: ${shellCommand}`);
         afterEach();
         if (res.stderr) {

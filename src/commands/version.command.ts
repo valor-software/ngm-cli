@@ -26,11 +26,13 @@ export function run(cli) {
             }))
           )
         },
+/*
         {
           title: 'Git commit submodules version update',
           task: () => execa.shell('git add -A && git commit -am "chore(package): submodules version updated"'),
           skip: () => noGitTagVersion
         },
+*/
         {
           title: 'Version root package',
           task: () => npmVersion({yarn, src: '.', version, message, noGitTagVersion})
