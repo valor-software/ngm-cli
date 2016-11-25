@@ -11,7 +11,7 @@ const e2eFolders = [
 const commands = [
   {
     command: 'build',
-    args:[
+    args: [
       // todo: how to test watch???!!!
       ['--verbose'],
       ['--local'],
@@ -60,23 +60,38 @@ const commands = [
 const tempBranch = `testing${Date.now()}`;
 const currentBranch = execa.shellSync(`git branch | sed -n '/\* /s///p'`).stdout;
 
-function before(){
+function before() {
   execa.shellSync(`git checkout -B ${tempBranch}`);
 }
-function after(){
+function after() {
   // clean and restore tags
-  console.log(execa.sheelSync(`git tag -l | xargs git tag -d && git fetch --tags`).stdout);
-  execa.sheelSync(`git checkout -B ${currentBranch}`);
+  execa.shellSync(`git tag -l | xargs git tag -d && git fetch --tags`);
+  execa.shellSync(`git checkout -B ${currentBranch}`);
+  execa.shellSync(`git branch -D ${tempBranch}`);
 }
 
-before();
-e2eFolders.forEach(folder =>
-  commands.forEach(opts =>
-    opts.args.forEach(arg => {
-      const shellCommand = 'node ./dist/bin/tsm-cli.js ' + [opts.command, '-p', folder].concat(...arg).join(' ');
-      console.time(`Running: ${shellCommand}`);
-      execa.shellSync(shellCommand);
-      console.timeEnd(`Running: ${shellCommand}`);
-      execa.shellSync('git clean -fx e2e');
-    })));
-after();
+function afterEach() {
+  execa.shellSync('git clean -fx e2e');
+}
+
+try {
+  before();
+  e2eFolders.forEach(folder =>
+    commands.forEach(opts =>
+      opts.args.forEach(arg => {
+        const shellCommand = 'node ./dist/bin/tsm-cli.js ' + [opts.command, '-p', folder].concat(...arg).join(' ');
+        console.time(`Running: ${shellCommand}`);
+        const res = execa.shellSync(shellCommand);
+        console.timeEnd(`Running: ${shellCommand}`);
+        afterEach();
+        if (res.stderr) {
+          console.error(`Failed: ${shellCommand}`);
+          throw new Error(res.stderr);
+        }
+      })));
+  after();
+} catch (err) {
+  console.error(err);
+  after();
+  process.exit(1);
+}

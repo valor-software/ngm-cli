@@ -1,3 +1,4 @@
+const execa = require('execa');
 import Listr = require('listr');
 import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
 import { npmVersion } from '../tasks/npm/npm-version.task';
