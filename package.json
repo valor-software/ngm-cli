@@ -1,6 +1,6 @@
 {
   "name": "npm-submodules",
-  "version": "0.1.1",
+  "version": "0.1.5-1",
   "private": false,
   "description": "Simple way to manage typescipt | angular2 submodules from one repository",
   "bin": {
@@ -11,6 +11,8 @@
     "build": "tsc -p src",
     "e2e1": "ts-node --project src src/bin/tsm-cli.ts build -p e2e/tsm-folders/src/",
     "test": "mocha",
+    "try": "node src/tasks/build-ts.js"
+    "e2e": "echo 'same here'",
     "try": "node src/tasks/build-ts.js"
   },
   "repository": {
@@ -58,7 +60,7 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "5.0.0-beta.12",
     "ts-node": "1.7.0",
-    "typescript": "^2.0.8",
+    "typescript": "2.1.1",
     "webpack": "2.1.0-beta.25",
     "zone.js": "^0.6.21"
   }

@@ -29,7 +29,7 @@ const cli = meow(`
         
       
     ----------------------------------------------------------------    
-    link  - run 'npm link' in each submodule dist folder
+    link  - runs 'npm link' in each submodule dist folder
       Usage:
           $ tsm link -p src
       Hint:
@@ -40,6 +40,9 @@ const cli = meow(`
       Optional options:
            --no-deep    By default local submodules will be linked to each other        
       
+    ----------------------------------------------------------------
+    publish - runs 'npm publish' in each dist submodule folders 
+     tag, access, anyBranch, skipCleanup
     ----------------------------------------------------------------
     version - runs 'npm version <version>' in each submodule and than in root folder
     Usage:
@@ -68,10 +71,15 @@ if (cli.input.length === 0) {
   cli.showHelp(0);
 }
 
+
+
 Promise
   .resolve()
-  .then(() => require('../lib/tsm').main(cli.input[0], cli))
+  .then(() => {
+    cli.flags = Object.assign(cli.flags, {tsc: true});
+    return require('../lib/tsm').main(cli.input[0], cli);
+  })
   .catch(err => {
-    console.error(`\n`, err);
+    console.error(`\n`, err.stderr || err);
     process.exit(1);
   });

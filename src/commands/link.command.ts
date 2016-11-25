@@ -1,48 +1,49 @@
 import Listr = require('listr');
 import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
-import { npmLink } from '../tasks/npm-link.task';
+import { npmLink } from '../tasks/npm/npm-link.task';
 
 // todo: 'npm-link` doesn't track adding new files,
 // so watch mode should be added
 
-export function run(cli) {
-  const {project, verbose, local, deep} = cli.flags;
+export function npmLinkCommand({project, local, deep, verbose, yarn}) {
   const noDeepLinking = deep === false;
+  // 1. clean dist folders
+  // 2.1 merge pkg json
+  // 2.2 validate pkg (main, module, types)
+  // 2.3 write pkg
+  // 3. compile ts
   return findSubmodules(project, {local})
-    .then((opts: TsmOptions[]) => {
-      // 1. clean dist folders
-      // 2.1 merge pkg json
-      // 2.2 validate pkg (main, module, types)
-      // 2.3 write pkg
-      // 3. compile ts
-      const tasks = new Listr([
-        {
-          title: 'Link all submodules',
-          task: () => {
-            const linkingTasks = new Listr([
-              ...opts.map(opt => ({
-                title: `npm link ${opt.pkg.name} (from: ${opt.src})`,
-                task: () => npmLink(opt.dist)
-              }))
-            ]);
+    .then((opts: TsmOptions[]) => new Listr([
+          {
+            title: 'Link all submodules',
+            task: () => {
+              const linkingTasks = new Listr(
+                opts.map(opt => ({
+                  title: `npm link ${opt.pkg.name} (from: ${opt.src})`,
+                  task: () => npmLink({yarn, src: opt.dist})
+                }))
+              );
 
-            if (noDeepLinking) {
+              if (noDeepLinking) {
+                return linkingTasks;
+              }
+
+              opts.filter(opt => opt.cross.length > 0)
+                .forEach(opt => opt.cross
+                  .forEach(crossName => linkingTasks.add(
+                    {
+                      title: `npm link ${crossName} to ${opt.pkg.name} (${opt.src})`,
+                      task: () => npmLink({yarn, src: opt.dist, module: crossName})
+                    }
+                  )));
               return linkingTasks;
             }
-
-            opts.filter(opt => opt.cross.length > 0)
-              .forEach(opt=>opt.cross
-                .forEach(crossName => linkingTasks.add(
-                  {
-                    title: `npm link ${crossName} to ${opt.pkg.name} (${opt.src})`,
-                    task: () => npmLink(opt.dist, crossName)
-                  }
-                )));
-            return linkingTasks;
           }
-        }
-      ], {renderer: verbose ? 'verbose' : 'default'});
+        ], {renderer: verbose ? 'verbose' : 'default'}));
+}
 
-      return tasks.run();
-    });
+export function run(cli) {
+  const {project, verbose, local, deep, yarn} = cli.flags;
+  return npmLinkCommand({project, verbose, local, deep, yarn})
+    .then(tasks=> tasks.run());
 }
