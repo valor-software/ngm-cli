@@ -40,7 +40,7 @@ const commands = [
     ]
   },
   {
-    command: 'version',
+    command: 'version prerelease',
     args: [
       ['--verbose'],
       ['--yarn'],
