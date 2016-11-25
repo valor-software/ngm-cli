@@ -11,7 +11,7 @@
 // todo: meow read wrong pkg version?
 // todo: pkg copy description, repository and licence
 // todo: add command to upgrade ng2 dependencies
-import { ROOT } from '../utils/helpers';
+import { ROOT } from '../utils/constants';
 import Listr = require('listr');
 import cpy  = require ('cpy');
 // const Listr = require('listr');
@@ -48,7 +48,7 @@ const outDir = path.resolve(ROOT, moduleConf.outDir);
 
 // todo: single run <--> watch
 
-const bundle = require('./../tasks/bundle-umd.task').run;
+const bundle = require('./../tasks/ngm/bundle-umd.task').run;
 
 const tasks = new Listr([
   // {
@@ -84,7 +84,7 @@ const tasks = new Listr([
   },
   {
     title: 'Copying package.json ',
-    task: () => require('./../tasks/build-pkg-json.task')
+    task: () => require('./../tasks/npm/build-pkg-json.task')
       .run(ROOT, moduleConf.root, outDir)
   },
   {

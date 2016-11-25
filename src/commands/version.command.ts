@@ -1,12 +1,12 @@
 import Listr = require('listr');
 import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
-import { npmVersion } from '../tasks/npm-version.task';
+import { npmVersion } from '../tasks/npm/npm-version.task';
 
 // todo: 'npm-link` doesn't track adding new files,
 // so watch mode should be added
 
 export function run(cli) {
-  const {project, verbose, message, gitTagVersion} = cli.flags;
+  const {project, verbose, message, gitTagVersion, yarn} = cli.flags;
   const noGitTagVersion = gitTagVersion === false;
   const version = cli.input[1];
 
@@ -20,13 +20,13 @@ export function run(cli) {
             task: () => new Listr([
               ...opts.map(opt => ({
                 title: `npm version  (${opt.pkg.name}: ${opt.src})`,
-                task: () => npmVersion(opt.src, {version, noGitTagVersion: true})
+                task: () => npmVersion({yarn, src:opt.src, version, noGitTagVersion: true})
               }))
             ])
           },
           {
             title: 'Version root package',
-            task: () => npmVersion('.', {version, message, noGitTagVersion})
+            task: () => npmVersion({yarn, src: '.', version, message, noGitTagVersion})
           }
         ],{ renderer: verbose ? 'verbose' : 'default' });
 

@@ -1,11 +1,11 @@
 import Listr = require('listr');
 import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
-import { npmLink } from '../tasks/npm-link.task';
+import { npmLink } from '../tasks/npm/npm-link.task';
 
 // todo: 'npm-link` doesn't track adding new files,
 // so watch mode should be added
 
-export function npmLinkCommand({project, local, deep, verbose}) {
+export function npmLinkCommand({project, local, deep, verbose, yarn}) {
   const noDeepLinking = deep === false;
   // 1. clean dist folders
   // 2.1 merge pkg json
@@ -20,7 +20,7 @@ export function npmLinkCommand({project, local, deep, verbose}) {
               const linkingTasks = new Listr([
                 ...opts.map(opt => ({
                   title: `npm link ${opt.pkg.name} (from: ${opt.src})`,
-                  task: () => npmLink(opt.dist)
+                  task: () => npmLink({yarn, src: opt.dist})
                 }))
               ]);
 
@@ -33,7 +33,7 @@ export function npmLinkCommand({project, local, deep, verbose}) {
                   .forEach(crossName => linkingTasks.add(
                     {
                       title: `npm link ${crossName} to ${opt.pkg.name} (${opt.src})`,
-                      task: () => npmLink(opt.dist, crossName)
+                      task: () => npmLink({yarn, src: opt.dist, module: crossName})
                     }
                   )));
               return linkingTasks;
@@ -43,7 +43,7 @@ export function npmLinkCommand({project, local, deep, verbose}) {
 }
 
 export function run(cli) {
-  const {project, verbose, local, deep} = cli.flags;
-  return npmLinkCommand({project, verbose, local, deep})
+  const {project, verbose, local, deep, yarn} = cli.flags;
+  return npmLinkCommand({project, verbose, local, deep, yarn})
     .then(tasks=> tasks.run());
 }

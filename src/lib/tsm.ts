@@ -10,7 +10,7 @@ function main(command, cli) {
 
 function getCommand(command) {
   switch (command) {
-    case 'build': return require('../commands/build-ts.command') ;
+    case 'build': return require('../commands/build.command') ;
     case 'link': return require('../commands/link.command') ;
     case 'version': return require('../commands/version.command');
     case 'publish': return require('../commands/publish.command');

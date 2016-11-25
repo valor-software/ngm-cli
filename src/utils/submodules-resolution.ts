@@ -2,8 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
 const readPkg = require('read-pkg');
-import { pkgFileName, dependencyKeys } from './constants';
-import { ROOT } from './helpers';
+import { pkgFileName, dependencyKeys, ROOT } from './constants';
 
 // todo: export to some typings
 // todo: add documentation

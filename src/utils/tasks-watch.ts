@@ -21,7 +21,7 @@ export function tasksWatch({project, tasks, watch}){
     }
 
     isRunning = true;
-    return tasks.run(cli)
+    return tasks.run()
       .then(() => {
         isRunning = false;
       })

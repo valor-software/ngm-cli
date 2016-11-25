@@ -3,6 +3,7 @@
 // todo: add help per command (sample: tsm help build)
 // todo: move help to separate file
 // todo: add test and e2e commands... (extract from publish)
+// todo: add --yarn option
 'use strict';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
@@ -71,9 +72,14 @@ if (cli.input.length === 0) {
   cli.showHelp(0);
 }
 
+
+
 Promise
   .resolve()
-  .then(() => require('../lib/tsm').main(cli.input[0], cli))
+  .then(() => {
+    cli.flags = Object.assign(cli.flags, {tsc: true});
+    return require('../lib/tsm').main(cli.input[0], cli);
+  })
   .catch(err => {
     console.error(`\n`, err);
     process.exit(1);

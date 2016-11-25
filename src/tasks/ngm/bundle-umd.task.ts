@@ -1,5 +1,5 @@
 import path = require('path');
-import {ROOT} from '../utils/helpers';
+import { ROOT } from '../../utils/constants';
 // todo: move to constants and make it configurable
 const bundlesDir = 'bundles';
 
@@ -15,7 +15,7 @@ const webpackOutputOptions = {
 const webpack = require('webpack');
 
 function bundleUmd(dir, moduleConf, minify) {
-  const config = require('../models/webpack-umd.config') ({
+  const config = require('../../models/webpack-umd.config')({
     name: !minify ? `${moduleConf.name}.umd` : `${moduleConf.name}.umd.min`,
     root: path.resolve(ROOT, moduleConf.root),
     entry: path.resolve(ROOT, moduleConf.root, moduleConf.main),
