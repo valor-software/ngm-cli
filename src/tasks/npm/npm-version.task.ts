@@ -2,7 +2,7 @@ const execa = require('execa');
 
 export function npmVersion({yarn, src, version , noGitTagVersion, message = ''}) {
   const args = [];
-  const command = yarn ? `yarn version --new-version ${version}` : 'npm version ${version}';
+  const command = yarn ? `yarn version --new-version ${version}` : `npm version ${version}`;
   if (message && !yarn) {
     args.push('-m', `"${message}"`);
   }

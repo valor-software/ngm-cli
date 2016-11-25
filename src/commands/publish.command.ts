@@ -22,7 +22,7 @@ export function run(cli) {
     .then((opts: TsmOptions[]) => {
       const tasks = new Listr([
         {
-          title: 'Git prepublish checks',
+          title: 'Git checks',
           task: () => prepublishGitCheck({anyBranch}),
           skip: () => skipGitCheck
         },

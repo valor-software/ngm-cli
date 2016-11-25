@@ -81,6 +81,6 @@ Promise
     return require('../lib/tsm').main(cli.input[0], cli);
   })
   .catch(err => {
-    console.error(`\n`, err);
+    console.error(`\n`, err.stderr || err);
     process.exit(1);
   });

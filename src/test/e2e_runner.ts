@@ -1,3 +1,4 @@
+// todo: verify results ;D
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 const execa = require('execa');
 
@@ -27,18 +28,48 @@ const commands = [
     command: 'link',
     args: [
       ['--verbose'],
-      ['--yarn']
       ['--deep'],
-      ['--no-deep']
+      ['--no-deep'],
+      ['--local'],
+      ['--no-local'],
+      ['--yarn'],
+      ['--yarn --deep'],
+      ['--yarn --no-deep'],
+      ['--yarn --local'],
+      ['--yarn --no-local'],
+    ]
+  },
+  {
+    command: 'version',
+    args: [
+      ['--verbose'],
+      ['--yarn'],
+      ['--message "hey yo!"'],
+      ['-no-git-tag-version'],
+      ['--yarn -no-git-tag-version'],
+
     ]
   }
-  // 'version',
   // 'publish'
 ];
 // todo: run this via `tsm e2e`
 // todo: add arguments combinations
 // todo: verify results, as for now check run time exceptions at least
 
+// helpers
+const tempBranch = `testing${Date.now()}`;
+const currentBranch = execa.shellSync(`git branch | sed -n '/\* /s///p'`).stdout;
+
+function before(){
+  execa.shellSync(`git checkout -B ${tempBranch}`);
+}
+function after(){
+  // clean and restore tags
+  console.log(execa.sheelSync(`git tag -l | xargs git tag -d && git fetch --tags`).stdout);
+  execa.sheelSync(`git checkout -B ${currentBranch}`);
+}
+
+before();
 e2eFolders.forEach(folder =>
   commands.forEach(opts =>
     opts.args.forEach(arg => {
@@ -48,3 +79,4 @@ e2eFolders.forEach(folder =>
       console.timeEnd(`Running: ${shellCommand}`);
       execa.shellSync('git clean -fx e2e');
     })));
+after();
