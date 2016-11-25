@@ -86,6 +86,7 @@ try {
         afterEach();
         if (res.stderr) {
           console.error(`Failed: ${shellCommand}`);
+          console.log(res.stdout);
           throw new Error(res.stderr);
         }
       })));
