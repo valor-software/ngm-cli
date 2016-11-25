@@ -2,7 +2,7 @@
 // todo: add support for config file
 // todo: add help per command (sample: tsm help build)
 // todo: move help to separate file
-
+// todo: add test and e2e commands... (extract from publish)
 'use strict';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
@@ -29,7 +29,7 @@ const cli = meow(`
         
       
     ----------------------------------------------------------------    
-    link  - run 'npm link' in each submodule dist folder
+    link  - runs 'npm link' in each submodule dist folder
       Usage:
           $ tsm link -p src
       Hint:
@@ -40,6 +40,9 @@ const cli = meow(`
       Optional options:
            --no-deep    By default local submodules will be linked to each other        
       
+    ----------------------------------------------------------------
+    publish - runs 'npm publish' in each dist submodule folders 
+     tag, access, anyBranch, skipCleanup
     ----------------------------------------------------------------
     version - runs 'npm version <version>' in each submodule and than in root folder
     Usage:

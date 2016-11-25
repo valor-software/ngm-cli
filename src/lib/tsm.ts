@@ -13,6 +13,7 @@ function getCommand(command) {
     case 'build': return require('../commands/build-ts.command') ;
     case 'link': return require('../commands/link.command') ;
     case 'version': return require('../commands/version.command');
+    case 'publish': return require('../commands/publish.command');
     default: throw new Error(`You are using unknown command '${command}', 
     please refer to help for a list of available commands`)
   }

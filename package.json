@@ -10,7 +10,9 @@
   "scripts": {
     "build": "tsc -p src",
     "e2e1": "ts-node --project src src/bin/tsm-cli.ts build -p e2e/tsm-folders/src/",
-    "test": "mocha",
+    "test1": "mocha",
+    "test": "echo 'all good, move on' && exit 1",
+    "e2e": "echo 'same here'",
     "try": "node src/tasks/build-ts.js"
   },
   "repository": {
