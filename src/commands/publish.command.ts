@@ -15,8 +15,10 @@ import { buildTsCommand } from './build.command';
 import { npmLinkCommand } from './link.command';
 
 export function run(cli) {
-  const {project, verbose, tag, access, anyBranch,
-    skipCleanup, skipGitCheck, yarn} = cli.flags;
+  const {
+    project, verbose, tag, access, anyBranch,
+    skipCleanup, skipGitCheck, yarn
+  } = cli.flags;
 
   return findSubmodules(project)
     .then((opts: TsmOptions[]) => {
@@ -47,12 +49,11 @@ export function run(cli) {
         },
         {
           title: 'Link submodules to local project',
-          task: () => new Listr([
-            ...opts.map(opt => ({
+          task: () => new Listr(opts.map(opt => ({
               title: `npm link ${opt.pkg.name}`,
-              task: () => npmLink({yarn, src:'.', module: opt.pkg.name})
+              task: () => npmLink({yarn, src: '.', module: opt.pkg.name})
             }))
-          ])
+          )
         },
         // todo: set numeric package version before publish
         {
@@ -61,12 +62,11 @@ export function run(cli) {
         },
         {
           title: 'Publish all submodules',
-          task: () => new Listr([
-            ...opts.map(opt => ({
+          task: () => new Listr(opts.map(opt => ({
               title: `npm publish ${opt.pkg.name}) (${opt.src})`,
-              task: () => npmPublish(opt.dist, {tag, access})
+              task: () => npmPublish({src: opt.dist, tag, access})
             }))
-          ]),
+          ),
           skip: () => true
         },
         {

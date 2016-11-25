@@ -17,12 +17,12 @@ export function npmLinkCommand({project, local, deep, verbose, yarn}) {
           {
             title: 'Link all submodules',
             task: () => {
-              const linkingTasks = new Listr([
-                ...opts.map(opt => ({
+              const linkingTasks = new Listr(
+                opts.map(opt => ({
                   title: `npm link ${opt.pkg.name} (from: ${opt.src})`,
                   task: () => npmLink({yarn, src: opt.dist})
                 }))
-              ]);
+              );
 
               if (noDeepLinking) {
                 return linkingTasks;

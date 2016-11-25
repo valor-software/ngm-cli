@@ -19,20 +19,20 @@ export function buildTsCommand({project, verbose, clean, local}) {
     .then(opts => new Listr([
       {
         title: 'Clean dist folders',
-        task: () => new Listr([
-          ...opts.map(opt => ({
+        task: () => new Listr(
+          opts.map(opt => ({
             title: `Cleaning ${opt.dist}`,
             task: () => del(opt.dist)
           }))
-        ]),
+        ),
         skip: () => !clean
       },
       {
         title: 'Copy md files and license',
-        task: () => Promise.all(opts.map(opt => Promise.all([
-          cpy(['*.md', 'LICENSE'], opt.dist),
-          cpy([path.join(opt.src, '*.md'), path.join(opt.src, 'LICENSE')], opt.dist)
-        ])))
+        task: () => Promise.all(opts.map(opt =>
+          cpy(['*.md', 'LICENSE'], opt.dist).then(()=>
+          cpy([path.join(opt.src, '*.md'), path.join(opt.src, 'LICENSE')], opt.dist))
+        ))
       },
       {
         title: "Build package.json files",
@@ -40,13 +40,13 @@ export function buildTsCommand({project, verbose, clean, local}) {
       },
       {
         title: 'Build projects',
-        task: () => new Listr([
-          ...opts.map(opt => ({
+        task: () => new Listr(
+          opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
             task: () => build(opt.project, {tsc: true})
               .catch(err => console.error(`\n${err.message}`))
           }))
-        ])
+        )
       }
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }

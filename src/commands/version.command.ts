@@ -3,13 +3,14 @@ import Listr = require('listr');
 import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
 import { npmVersion } from '../tasks/npm/npm-version.task';
 
-// todo: 'npm-link` doesn't track adding new files,
-// so watch mode should be added
-
 export function run(cli) {
   const {project, verbose, message, gitTagVersion, yarn} = cli.flags;
   const noGitTagVersion = gitTagVersion === false;
   const version = cli.input[1];
+
+  if (!version) {
+    return Promise.reject('Error: please provide version like (patch, major, prerelase, 1.2.3, etc.');
+  }
 
   return findSubmodules(project)
     .then((opts: TsmOptions[]) => {
@@ -18,12 +19,12 @@ export function run(cli) {
       const tasks = new Listr([
         {
           title: 'Version all submodules',
-          task: () => new Listr([
-            ...opts.map(opt => ({
+          task: () => new Listr(
+            opts.map(opt => ({
               title: `npm version  (${opt.pkg.name}: ${opt.src})`,
               task: () => npmVersion({yarn, src: opt.src, version, noGitTagVersion: true})
             }))
-          ])
+          )
         },
         {
           title: 'Git commit submodules version update',
