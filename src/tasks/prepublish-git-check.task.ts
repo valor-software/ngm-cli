@@ -9,8 +9,7 @@
 const execa = require('execa');
 const Listr = require('listr');
 
-export function prepublishGitCheck(opts) {
-  const {anyBranch} = opts;
+export function prepublishGitCheck({anyBranch}) {
   const tasks = [
     {
       title: 'Check current branch',
@@ -29,14 +28,14 @@ export function prepublishGitCheck(opts) {
         }
       })
     },
-   /* {
+    {
       title: 'Check remote history',
       task: () => execa.stdout('git', ['rev-list', '--count', '--left-only', '@{u}...HEAD']).then(result => {
         if (result !== '0') {
           throw new Error('Remote history differs. Please pull changes.');
         }
       })
-    }*/
+    }
   ];
 
   return new Listr(tasks);

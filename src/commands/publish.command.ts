@@ -17,7 +17,7 @@ import { npmLinkCommand } from './link.command';
 export function run(cli) {
   const {
     project, verbose, tag, access, anyBranch,
-    skipCleanup, skipGitCheck, yarn
+    skipCleanup, skipGitCheck, yarn, yolo, skipPublish
   } = cli.flags;
 
   return findSubmodules(project)
@@ -26,54 +26,60 @@ export function run(cli) {
         {
           title: 'Git checks',
           task: () => prepublishGitCheck({anyBranch}),
-          skip: () => skipGitCheck
+          skip: () => skipGitCheck || yolo
         },
         // test command
         {
           title: 'Installing dependencies',
-          task: () => new Listr(npmInstall({skipCleanup, yarn}))
+          task: () => new Listr(npmInstall({skipCleanup, yarn})),
+          skip: () => yolo
         },
         {
           title: 'Running unit tests tests',
           task: () => execa('npm', ['test']),
-          skip: () => skipCleanup
+          skip: () => yolo
         },
         // e2e command
         {
           title: 'Build submodules for e2e',
-          task: () => buildTsCommand({project, verbose, clean: true, local: true})
+          task: () => buildTsCommand({project, verbose, clean: true, local: true}),
+          skip: () => yolo
         },
         {
           title: 'Link submodules',
-          task: () => npmLinkCommand({project, local: true, deep: true, verbose, yarn})
+          task: () => npmLinkCommand({project, local: true, deep: true, verbose, yarn}),
+          skip: () => yolo
         },
         {
           title: 'Link submodules to local project',
           task: () => new Listr(opts.map(opt => ({
               title: `npm link ${opt.pkg.name}`,
-              task: () => npmLink({yarn, src: '.', module: opt.pkg.name})
+              task: () => npmLink({yarn, cwd: '.', module: opt.pkg.name})
             }))
-          )
+          ),
+          skip: () => yolo
         },
-        // todo: set numeric package version before publish
+        // publish
+        // set numeric package version before publish
         {
-          title: 'Build submodules for e2e',
-          task: () => buildTsCommand({project, verbose, clean: true, local: false})
+          title: 'Build submodules for publish',
+          task: () => buildTsCommand({project, verbose, clean: true, local: false}),
+          skip: () => skipPublish
         },
         {
           title: 'Publish all submodules',
           task: () => new Listr(opts.map(opt => ({
               title: `npm publish ${opt.pkg.name}) (${opt.src})`,
-              task: () => npmPublish({src: opt.dist, tag, access})
+              task: () => npmPublish({yarn, cwd: opt.dist, tag, access})
             }))
           ),
-          skip: () => true
+          skip: () => skipPublish
         },
-        {
+        /*{
           title: 'Pushing tags',
           task: () => execa('git', ['push', '--follow-tags']),
           skip: () => true
-        }
+        }*/
       ], {renderer: verbose ? 'verbose' : 'default'});
 
       return tasks.run();

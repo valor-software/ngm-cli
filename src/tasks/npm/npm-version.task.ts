@@ -1,23 +1,11 @@
 import path = require('path');
 const execa = require('execa');
 
-// import {Observable} from 'rxjs';
-// const streamToObservable = require('stream-to-observable');
-// const split = require('split');
-
-/*
- const exec = (cmd, args, opts) => {
- // Use `Observable` support if merged https://github.com/sindresorhus/execa/pull/26
- const cp = execa(cmd, args, opts);
-
- return Observable.merge(
- streamToObservable(cp.stdout.pipe(split()), {await: cp}),
- streamToObservable(cp.stderr.pipe(split()), {await: cp})
- ).filter(Boolean);
- };
- */
-
 export function npmVersion({yarn, src, version, noGitTagVersion, message = ''}) {
+  // we just updated subpackages versions, so working dir is not clean
+  // but we knew it and using --force flag
+  // so it will produce error:  npm WARN using --force I sure hope you know what you are doing.
+  // and we can swallow it
   const args = [' ', '--force'];
   const command = yarn
     ? `yarn version --new-version ${version}`
@@ -29,6 +17,6 @@ export function npmVersion({yarn, src, version, noGitTagVersion, message = ''}) 
     args.push('--no-git-tag-version');
   }
   const cmd = command + args.join(' ');
-  console.log(cmd);
-  return execa.shell(cmd, {cwd: path.resolve(src)});
+  return new Promise(resolve => execa.shell(cmd, {cwd: path.resolve(src)})
+    .then(resolve).catch(resolve));
 }

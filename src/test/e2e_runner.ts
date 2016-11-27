@@ -3,9 +3,9 @@ require('events').EventEmitter.defaultMaxListeners = Infinity;
 const execa = require('execa');
 
 const e2eFolders = [
-  'e2e/tsm-base-url',
-  'e2e/tsm-folders',
-  'e2e/tsm-single',
+  'e2e/tsm-base-url/src',
+  'e2e/tsm-folders/src',
+  'e2e/tsm-single/src',
 ];
 
 const commands = [
@@ -18,10 +18,10 @@ const commands = [
       ['--no-local'],
       ['--clean'],
       ['--no-clean'],
-      ['--local --clean'],
       ['--no-local --clean'],
       ['--local --no-clean'],
-      ['--no-local --no-clean']
+      ['--no-local --no-clean'],
+      ['--local --clean']
     ]
   },
   {
@@ -61,6 +61,7 @@ const tempBranch = `testing${Date.now()}`;
 const currentBranch = execa.shellSync(`git branch | sed -n '/\* /s///p'`).stdout;
 
 function before() {
+  console.log('e2e before');
   const status = execa.shellSync('git status --porcelain');
   console.log(status.stdout);
   if (status && status.stdout !== '') {
@@ -70,18 +71,58 @@ function before() {
   execa.shellSync(`git checkout -B ${tempBranch}`);
 }
 function after() {
+  console.log('e2e after');
+  afterEach();
   // clean and restore tags
   execa.shellSync(`git tag -l | xargs git tag -d && git fetch --tags`);
-  execa.shellSync(`git checkout -B ${currentBranch}`);
+  execa.shellSync(`git checkout ${currentBranch}`);
   execa.shellSync(`git branch -D ${tempBranch}`);
 }
 
 function afterEach() {
-  execa.shellSync('git clean -fx e2e');
+  execa.shellSync('git clean -fxd e2e');
+  execa.shellSync('git checkout -- .');
 }
+
+let index = 0;
+const cmds = createCmdsList();
+
+
 
 try {
   before();
+  next(index);
+  after();
+} catch (err) {
+  console.error(err);
+  after();
+  process.exit(1);
+}
+
+function next(i){
+  const shellCommand = cmds[i];
+  console.time(`Running: ${shellCommand}`);
+
+  const res = execa.shellSync(shellCommand);
+
+  console.timeEnd(`Running: ${shellCommand}`);
+  // console.log(res.stdout);
+  // afterEach();
+  if (res.stderr) {
+    console.error(`Failed: ${shellCommand}`);
+    console.log(res.stdout);
+    throw new Error(res.stderr);
+  }
+
+  index++;
+  if (index === cmds.length) {
+    return;
+  }
+  return next(index);
+}
+
+function createCmdsList(){
+  const cmds = [];
   e2eFolders.forEach(folder =>
     commands.forEach(opts =>
       opts.args.forEach(arg => {
@@ -89,21 +130,7 @@ try {
           [opts.command, '-p', folder]
             .concat(...arg)
             .join(' ');
-        console.time(`Running: ${shellCommand}`);
-
-        const res = execa.shellSync(shellCommand);
-
-        console.timeEnd(`Running: ${shellCommand}`);
-        afterEach();
-        if (res.stderr) {
-          console.error(`Failed: ${shellCommand}`);
-          console.log(res.stdout);
-          throw new Error(res.stderr);
-        }
+        cmds.push(shellCommand);
       })));
-  after();
-} catch (err) {
-  console.error(err);
-  after();
-  process.exit(1);
+  return cmds;
 }

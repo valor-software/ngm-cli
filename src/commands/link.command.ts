@@ -19,8 +19,8 @@ export function npmLinkCommand({project, local, deep, verbose, yarn}) {
             task: () => {
               const linkingTasks = new Listr(
                 opts.map(opt => ({
-                  title: `npm link ${opt.pkg.name} (from: ${opt.src})`,
-                  task: () => npmLink({yarn, src: opt.dist})
+                  title: `npm link ${opt.pkg.name} (from: ${opt.dist})`,
+                  task: () => npmLink({yarn, cwd: opt.dist})
                 }))
               );
 
@@ -33,7 +33,7 @@ export function npmLinkCommand({project, local, deep, verbose, yarn}) {
                   .forEach(crossName => linkingTasks.add(
                     {
                       title: `npm link ${crossName} to ${opt.pkg.name} (${opt.src})`,
-                      task: () => npmLink({yarn, src: opt.dist, module: crossName})
+                      task: () => npmLink({yarn, cwd: opt.dist, module: crossName})
                     }
                   )));
               return linkingTasks;

@@ -8,8 +8,7 @@ export function npmInstall({skipCleanup, yarn}) {
     // if yarn
     [{
       title: 'Clean install dependencies',
-      task: () => execa('yarn', ['upgrade']),
-      skip: () => skipCleanup
+      task: () => execa('yarn', [skipCleanup ? '' : 'upgrade'])
     }]
     // else npm
     : [
