@@ -1,6 +1,6 @@
 {
   "name": "tsm-cli",
-  "version": "0.1.1-2",
+  "version": "0.1.1",
   "bin": {
     "ngm": "bin/ngm-cli.js",
     "tsm": "bin/tsm-cli.js"
