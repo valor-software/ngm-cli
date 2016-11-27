@@ -3,6 +3,7 @@
 // todo: add help per command (sample: tsm help build)
 // todd: add test and e2e command (cut of from publish tasks)
 // todo: move help to separate file
+// todo: use Observables
 
 'use strict';
 const meow = require('meow');
