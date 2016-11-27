@@ -6,24 +6,30 @@
 // todo: add ts hack of output
 // todo: add copy task (readme and licence by default)
 // todo: add assets copy
-const rootFolder = require('./../utils/helpers').ROOT;
-const Listr = require('listr');
-const execa = require('execa');
-const cpy = require('cpy');
-
+// todo: version/link/publish
+// todo: write help
+// todo: meow read wrong pkg version?
+// todo: pkg copy description, repository and licence
+// todo: add command to upgrade ng2 dependencies
+// todo: add bundles with rollup
+import { ROOT } from '../utils/constants';
+import Listr = require('listr');
+import cpy  = require ('cpy');
+// const Listr = require('listr');
+// const execa = require('execa');
+// const cpy = require('cpy');
 
 const updateNotifier = require('update-notifier');
 // const meow = require('meow');
 
 /*const cli = meow(`
-	Usage
-	  $ ngm
-	Options
-	Examples
-`);*/
+ Usage
+ $ ngm
+ Options
+ Examples
+ `);*/
 
 // updateNotifier({pkg: cli.pkg}).notify();
-
 
 const defaultConfigName = 'angular-cli.json';
 
@@ -31,19 +37,19 @@ const devOutDir = 'node_modules';
 
 const path = require('path');
 
-const angularCliJson = require(path.resolve(rootFolder, defaultConfigName));
+const angularCliJson = require(path.resolve(ROOT, defaultConfigName));
 // todo: support multiply modules
 const moduleConf = angularCliJson.module[0];
 
 // const outDir = path.resolve(rootFolder, devOutDir, moduleConf.name);
-const outDir = path.resolve(rootFolder, moduleConf.outDir);
+const outDir = path.resolve(ROOT, moduleConf.outDir);
 // const outDir = mode === 'development'
 //   ? path.resolve(rootFolder, devOutDir, moduleConf.name)
 //   : path.resolve(rootFolder, moduleConf.outDir);
 
 // todo: single run <--> watch
 
-const bundle = require('./../tasks/bundle-umd').run;
+const bundle = require('./../tasks/ngm/bundle-umd.task').run;
 
 const tasks = new Listr([
   // {
@@ -71,15 +77,16 @@ const tasks = new Listr([
   // },
   {
     title: `Cleaning destination folder: ${outDir}`,
-    task: () => require('./../tasks/clean').run(outDir)
+    task: () => require('./../tasks/clean.task') .run(outDir)
   },
   {
     title: 'Building with ngc',
-    task: () => require('./../tasks/build-ngc').run(moduleConf)
+    task: () => require('./../tasks/build-ngc.task') .run(moduleConf)
   },
   {
     title: 'Copying package.json ',
-    task: () => require('./../tasks/copy-package-json').run(outDir, moduleConf)
+    task: () => require('./../tasks/npm/build-pkg-json.task')
+      .run(ROOT, moduleConf.root, outDir)
   },
   {
     title: 'Bundling umd version',

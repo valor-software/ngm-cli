@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "../../dist/module-a",
+    "module": "commonjs",
+    "target": "es5",
+    "declaration" :true,
+    "sourceMap": false,
+    "moduleResolution": "node",
+    "noEmitHelpers": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "noEmitOnError": false,
+    "lib": ["dom", "es6"]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
