@@ -1,7 +1,11 @@
 {
-  "name": "ngm-cli",
-  "version": "0.1.1-1",
-  "peerDependencies": {
+  "name": "tsm-cli",
+  "version": "0.1.1-0",
+  "bin": {
+    "ngm": "bin/ngm-cli.js",
+    "tsm": "bin/tsm-cli.js"
+  },
+  "dependencies": {
     "typescript": "*",
     "reflect-metadata": "*",
     "@angular/tsc-wrapped": "*",
