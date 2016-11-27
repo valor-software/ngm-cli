@@ -69,7 +69,7 @@ export function run(cli) {
         {
           title: 'Publish all submodules',
           task: () => new Listr(opts.map(opt => ({
-              title: `npm publish ${opt.pkg.name}) (${opt.src})`,
+              title: `npm publish (${opt.pkg.name}) (from: ${opt.dist})`,
               task: () => npmPublish({yarn, cwd: opt.dist, tag, access})
             }))
           ),
