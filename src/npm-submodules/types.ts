@@ -10,3 +10,6 @@ export interface TsmOptions {
    * */
   cross?: string[];
 }
+
+// todo: remove!
+export enum BuildMode {tsc, ngc}

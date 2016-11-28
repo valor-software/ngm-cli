@@ -8,7 +8,7 @@ const del = require('del');
 import { build, buildPkgs } from '../tasks';
 import { findSubmodules, tasksWatch } from '../utils';
 
-export function buildTsCommand({project, verbose, clean, local}) {
+export function buildTsCommand({project, verbose, clean, local, mode}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -42,7 +42,7 @@ export function buildTsCommand({project, verbose, clean, local}) {
         task: () => new Listr(
           opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
-            task: () => build(opt.project, {tsc: true})
+            task: () => build(opt.project, {mode})
               .catch(err => console.error(`\n${err.message}`))
           }))
         )
@@ -51,7 +51,7 @@ export function buildTsCommand({project, verbose, clean, local}) {
 }
 
 export function buildTsRun(cli) {
-  const {project, watch, verbose, clean, local} = cli.flags;
-  return buildTsCommand({project, verbose, clean, local})
+  const {project, watch, verbose, clean, local, mode} = cli.flags;
+  return buildTsCommand({project, verbose, clean, local, mode})
     .then(tasks => tasksWatch({project, tasks, watch}));
 }

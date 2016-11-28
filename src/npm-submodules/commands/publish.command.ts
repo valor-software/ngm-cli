@@ -12,7 +12,7 @@ import Listr = require('listr');
 export function run(cli) {
   const {
     project, verbose, tag, access, anyBranch,
-    skipCleanup, skipGitCheck, yarn, yolo, skipPublish
+    skipCleanup, skipGitCheck, yarn, yolo, skipPublish, mode
   } = cli.flags;
 
   return findSubmodules(project)
@@ -37,7 +37,7 @@ export function run(cli) {
         // e2e command
         {
           title: 'Build submodules for e2e',
-          task: () => buildTsCommand({project, verbose, clean: true, local: true}),
+          task: () => buildTsCommand({project, verbose, mode, clean: true, local: true}),
           skip: () => yolo
         },
         {
@@ -58,7 +58,7 @@ export function run(cli) {
         // set numeric package version before publish
         {
           title: 'Build submodules for publish',
-          task: () => buildTsCommand({project, verbose, clean: true, local: false}),
+          task: () => buildTsCommand({project, verbose, mode, clean: true, local: false}),
           skip: () => skipPublish
         },
         {
@@ -70,11 +70,11 @@ export function run(cli) {
           ),
           skip: () => skipPublish
         },
-        /*{
+        {
          title: 'Pushing tags',
          task: () => execa('git', ['push', '--follow-tags']),
          skip: () => true
-         }*/
+         }
       ], {renderer: verbose ? 'verbose' : 'default'});
 
       return tasks.run();

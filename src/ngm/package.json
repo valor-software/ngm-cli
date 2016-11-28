@@ -5,6 +5,11 @@
     "ngm": "bin/ngm-cli.js"
   },
   "dependencies": {
-    "npm-submodules": "*"
+    "npm-submodules": "*",
+    "rxjs": "*",
+    "zone.js": "*",
+    "reflect-metadata": "*",
+    "@angular/tsc-wrapped": "*",
+    "@angular/compiler-cli": "*"
   }
 }

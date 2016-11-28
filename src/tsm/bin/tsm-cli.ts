@@ -5,6 +5,7 @@
 // todo: move help to separate file
 // todo: use Observables
 
+import { BuildMode } from 'npm-submodules';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
 
@@ -96,7 +97,7 @@ import { main } from '../lib/tsm';
 Promise
   .resolve()
   .then(() => {
-    cli.flags = Object.assign(cli.flags, {tsc: true});
+    cli.flags = Object.assign(cli.flags, {mode: BuildMode.tsc});
     return main(cli.input[0], cli);
   })
   .then(() => {

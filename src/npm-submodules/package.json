@@ -14,7 +14,6 @@
     "lodash": "*",
     "meow": "*",
     "read-pkg": "*",
-    "rxjs": "*",
     "semver": "*",
     "split": "*",
     "stream-to-observable": "*",
@@ -27,10 +26,6 @@
     "@types/node": "*",
     "@types/webpack": "*",
     "webpack": "*",
-    "zone.js": "*",
-    "typescript": "*",
-    "reflect-metadata": "*",
-    "@angular/tsc-wrapped": "*",
-    "@angular/compiler-cli": "*"
+    "typescript": "*"
   }
 }
