@@ -5,7 +5,6 @@
 // todo: move help to separate file
 // todo: use Observables
 
-import { BuildMode } from 'npm-submodules';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
 
@@ -27,7 +26,7 @@ const cli = meow(`
         --no-local      Use version numbers from local submodules when building package.json,
                           usually needed only for publish command
         -w, --watch     Watch input files
-        -v, --verbose   Enable verbose mode
+        --verbose   Enable verbose mode
         --clean         Cleaning dist folders
                           It removes folder, so you will need to rerun commands like 'link', etc...
         
@@ -80,7 +79,6 @@ const cli = meow(`
     m: 'message',
     p: 'project',
     w: 'watch',
-    v: 'verbose',
     local: 'use-local-dependencies alias'
   }
 });
@@ -96,13 +94,7 @@ import { main } from '../lib/ngm';
 
 Promise
   .resolve()
-  .then(() => {
-    cli.flags = Object.assign(cli.flags, {mode: BuildMode.ngc});
-    return main(cli.input[0], cli);
-  })
-  .then(() => {
-    // console.log('Mission complete!');
-  })
+  .then(() => main(cli.input[0], cli))
   .catch(err => {
     console.error(`\n`, err.stderr || err);
     process.exit(1);

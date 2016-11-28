@@ -1,7 +1,6 @@
-'use strict';
-
 import webpack = require('webpack');
-module.exports = (config) => {
+
+export function getWebpackConfig(config) {
   return {
     devtool: 'source-map',
 
@@ -26,7 +25,7 @@ module.exports = (config) => {
       rules: [
         {
           test: /\.ts$/,
-          loader: `awesome-typescript-loader?declaration=false&tsconfig=${config.tsconfig}`,
+          loader: `awesome-typescript-loader?declaration=false`,
           exclude: [/\.e2e\.ts$/]
         },
         // in main, load css as raw text

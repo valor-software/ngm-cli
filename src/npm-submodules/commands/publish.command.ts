@@ -1,7 +1,6 @@
 import { TsmOptions } from '../types';
 import { findSubmodules } from '../utils';
 import { npmPublish, prepublishGitCheck, npmLink, npmInstall } from '../tasks';
-import { buildTsCommand } from './build.command';
 import { npmLinkCommand } from './link.command';
 /**
  * Heavily inspired by https://github.com/sindresorhus/np
@@ -9,10 +8,10 @@ import { npmLinkCommand } from './link.command';
 const execa = require('execa');
 import Listr = require('listr');
 
-export function run(cli) {
+export function run(cli, {buildCommand}) {
   const {
     project, verbose, tag, access, anyBranch,
-    skipCleanup, skipGitCheck, yarn, yolo, skipPublish, mode
+    skipCleanup, skipGitCheck, yarn, yolo, skipPublish
   } = cli.flags;
 
   return findSubmodules(project)
@@ -37,7 +36,7 @@ export function run(cli) {
         // e2e command
         {
           title: 'Build submodules for e2e',
-          task: () => buildTsCommand({project, verbose, mode, clean: true, local: true}),
+          task: () => buildCommand({project, verbose, clean: true, local: true}),
           skip: () => yolo
         },
         {
@@ -58,8 +57,7 @@ export function run(cli) {
         // set numeric package version before publish
         {
           title: 'Build submodules for publish',
-          task: () => buildTsCommand({project, verbose, mode, clean: true, local: false}),
-          skip: () => skipPublish
+          task: () => buildCommand({project, verbose, clean: true, local: false})
         },
         {
           title: 'Publish all submodules',

@@ -1,14 +1,14 @@
 // todo: add load from config file, TBD
 
 import path = require('path');
-import Listr = require('listr');
-import cpy = require('cpy');
+const Listr = require('listr');
+const cpy = require('cpy');
 const del = require('del');
 
-import { build, buildPkgs } from '../tasks';
-import { findSubmodules, tasksWatch } from '../utils';
+import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
+import { build } from '../tasks';
 
-export function buildTsCommand({project, verbose, clean, local, mode}) {
+export function buildCommand({project, verbose, clean, local}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -29,8 +29,10 @@ export function buildTsCommand({project, verbose, clean, local, mode}) {
       {
         title: 'Copy md files and license',
         task: () => Promise.all(opts.map(opt =>
-          cpy(['*.md', 'LICENSE'], opt.dist).then(() =>
-            cpy([path.join(opt.src, '*.md'), path.join(opt.src, 'LICENSE')], opt.dist))
+          cpy(['*.md', 'LICENSE'], opt.dist)
+            .then(() =>
+              cpy([path.join(opt.src, '*.md'),
+                path.join(opt.src, 'LICENSE')], opt.dist))
         ))
       },
       {
@@ -42,8 +44,7 @@ export function buildTsCommand({project, verbose, clean, local, mode}) {
         task: () => new Listr(
           opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
-            task: () => build(opt.project, {mode})
-              .catch(err => console.error(`\n${err.message}`))
+            task: () => build(opt.project)
           }))
         )
       }
@@ -51,7 +52,7 @@ export function buildTsCommand({project, verbose, clean, local, mode}) {
 }
 
 export function buildTsRun(cli) {
-  const {project, watch, verbose, clean, local, mode} = cli.flags;
-  return buildTsCommand({project, verbose, clean, local, mode})
+  const {project, watch, verbose, clean, local} = cli.flags;
+  return buildCommand({project, verbose, clean, local})
     .then(tasks => tasksWatch({project, tasks, watch}));
 }

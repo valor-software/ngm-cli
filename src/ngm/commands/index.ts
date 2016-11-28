@@ -1,0 +1,1 @@
+export {buildCommand, buildTsRun} from './build.command';

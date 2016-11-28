@@ -11,5 +11,9 @@ export interface TsmOptions {
   cross?: string[];
 }
 
-// todo: remove!
-export enum BuildMode {tsc, ngc}
+export interface BuildOptions {
+  project: string;
+  verbose: boolean;
+  clean: boolean;
+  local: boolean
+}
