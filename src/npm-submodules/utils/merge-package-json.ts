@@ -18,7 +18,7 @@ export function mergePackageJson(data) {
   dependenciesHash = Object.assign(dependenciesHash, localDependencies);
 
   // update sub module package.json dependencies versions
-  const newModulePkg = Object.assign(module, filteredBasePkg);
+  const newModulePkg = Object.assign(filteredBasePkg, module);
   _.each(dependencyKeys, (section) => {
     newModulePkg[section] = _.mapValues(newModulePkg[section], (version, dependency) => dependenciesHash[dependency]);
   });
