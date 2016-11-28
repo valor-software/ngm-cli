@@ -1,6 +1,7 @@
+import { TsmOptions } from '../types';
 const execa = require('execa');
 import Listr = require('listr');
-import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
+import { findSubmodules } from '../utils/submodules-resolution';
 import { npmVersion } from '../tasks/npm/npm-version.task';
 
 export function run(cli) {

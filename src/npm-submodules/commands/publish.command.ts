@@ -1,18 +1,13 @@
+import { TsmOptions } from '../types';
+import { findSubmodules } from '../utils';
+import { npmPublish, prepublishGitCheck, npmLink, npmInstall } from '../tasks';
+import { buildTsCommand } from './build.command';
+import { npmLinkCommand } from './link.command';
 /**
  * Heavily inspired by https://github.com/sindresorhus/np
  * */
 const execa = require('execa');
 import Listr = require('listr');
-
-import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
-
-import { npmPublish } from '../tasks/npm/npm-publish.task';
-import { prepublishGitCheck } from '../tasks/prepublish-git-check.task';
-import { npmLink } from '../tasks/npm/npm-link.task';
-import { npmInstall } from '../tasks/npm/npm-install.task';
-
-import { buildTsCommand } from './build.command';
-import { npmLinkCommand } from './link.command';
 
 export function run(cli) {
   const {
@@ -76,10 +71,10 @@ export function run(cli) {
           skip: () => skipPublish
         },
         /*{
-          title: 'Pushing tags',
-          task: () => execa('git', ['push', '--follow-tags']),
-          skip: () => true
-        }*/
+         title: 'Pushing tags',
+         task: () => execa('git', ['push', '--follow-tags']),
+         skip: () => true
+         }*/
       ], {renderer: verbose ? 'verbose' : 'default'});
 
       return tasks.run();

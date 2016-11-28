@@ -1,13 +1,12 @@
 // todo: add load from config file, TBD
+
 import path = require('path');
 import Listr = require('listr');
 import cpy = require('cpy');
 const del = require('del');
 
-import { build } from '../tasks/build.task';
-import { findSubmodules } from '../utils/submodules-resolution';
-import { buildPkgs } from '../tasks/npm/build-pkg-json.task';
-import { tasksWatch } from '../utils/tasks-watch';
+import { build, buildPkgs } from '../tasks';
+import { findSubmodules, tasksWatch } from '../utils';
 
 export function buildTsCommand({project, verbose, clean, local}) {
   // 1. clean dist folders
@@ -30,8 +29,8 @@ export function buildTsCommand({project, verbose, clean, local}) {
       {
         title: 'Copy md files and license',
         task: () => Promise.all(opts.map(opt =>
-          cpy(['*.md', 'LICENSE'], opt.dist).then(()=>
-          cpy([path.join(opt.src, '*.md'), path.join(opt.src, 'LICENSE')], opt.dist))
+          cpy(['*.md', 'LICENSE'], opt.dist).then(() =>
+            cpy([path.join(opt.src, '*.md'), path.join(opt.src, 'LICENSE')], opt.dist))
         ))
       },
       {
@@ -51,7 +50,7 @@ export function buildTsCommand({project, verbose, clean, local}) {
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }
 
-export function run(cli) {
+export function buildTsRun(cli) {
   const {project, watch, verbose, clean, local} = cli.flags;
   return buildTsCommand({project, verbose, clean, local})
     .then(tasks => tasksWatch({project, tasks, watch}));

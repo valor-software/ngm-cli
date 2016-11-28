@@ -1,3 +1,15 @@
+/*
+tsm-cli e2e test or `welcome to hell`
+in order to run this test you need to build and link src folder
+with tsm-cli from npm, it is in dev dependecies already so just do:
+$ npm run build
+on linux `npm link` requires sudo
+$ (sudo) ./node_module/.bin/tsm link -p src
+now you have can use 2 tsm versions in parallel
+local tsm - is from npm
+global tsm - is your dev version
+*/
+
 // todo: verify results ;D
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 const execa = require('execa');
@@ -126,10 +138,7 @@ function createCmdsList(){
   e2eFolders.forEach(folder =>
     commands.forEach(opts =>
       opts.args.forEach(arg => {
-        const shellCommand = 'node ./dist/bin/tsm-cli.js ' +
-          [opts.command, '-p', folder]
-            .concat(...arg)
-            .join(' ');
+        const shellCommand = ['tsm', opts.command, '-p', folder].concat(...arg).join(' ');
         cmds.push(shellCommand);
       })));
   return cmds;

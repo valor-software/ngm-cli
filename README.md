@@ -1,56 +1,25 @@
 # npm-submodules
 Simple way to manage typescipt | angular2 submodules from one repository
 
-Sample projects structure
+This is a base lib 
+
+If you want to try this out, please check [tsm-cli](https://www.npmjs.com/package/tsm-cli) and [ngm-cli](https://www.npmjs.com/package/ngm-cli) tools at npm
+
+## Developers
+How to try this monster locally?
+
+1. Git clone source repo
+2. In order to run this you need to build and link src folder
+with tsm-cli from npm, it is in dev dependencies already so just do:
+```bash
+$ npm run build
 ```
-+-- dist // target folder
-+-- src
-|   +-- package.json // module package.json
-package.json // root package.json
+on linux `npm link` requires sudo
+```bash 
+$ (sudo) ./node_module/.bin/tsm link -p src
 ```
-1. Safety: add `"private":true` to your root `package.json`
+now you have can use 2 tsm versions in parallel
+- local tsm - is from npm
+- global tsm - is your dev version
 
-2. Module package.json (see sample project structure above) should contain dependencies and peerDepencies of module, sample:
-
-  ```json
-  {
-    "name": "ng2-bootstrap",
-    "dependencies": {
-      "moment": "*"
-    },
-    "peerDependencies": {
-      "@angular/common": "*",
-      "@angular/compiler": "*",
-      "@angular/core": "*",
-      "@angular/forms": "*"
-    }
-  }
-  ```
-
-3. Module configuration: by default `ngm` reads `angular-cli.json` in projects root
-  ```json
-  {
-    "module":[{
-      "name": "ng2-bootstrap",
-      "root": "src",
-      "outDir": "dist",
-      "main":"index.ts",
-      "tsconfig": "tsconfig.json"
-    }]
-  }
-  ```
-
-4. Running: just add `ngm` script to your root package.json (see sample project structure above)
-
-  ```json
-    "scripts": {
-      "build": "ngm"
-    }
-  ```
-
-5. Ready steady go:
-  ```sh
-  npm run build
-  ```
-
-6. Now you can go to `dist` folder and do `npm publish` (will be added as a command later)
+Have fun! ;)

@@ -1,6 +1,7 @@
-import Listr = require('listr');
-import { findSubmodules, TsmOptions } from '../utils/submodules-resolution';
-import { npmLink } from '../tasks/npm/npm-link.task';
+const Listr = require('listr');
+import { findSubmodules } from '../utils';
+import { npmLink } from '../tasks';
+import { TsmOptions } from '../types';
 
 // todo: 'npm-link` doesn't track adding new files,
 // so watch mode should be added

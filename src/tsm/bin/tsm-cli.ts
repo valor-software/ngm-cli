@@ -5,10 +5,8 @@
 // todo: move help to separate file
 // todo: use Observables
 
-'use strict';
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
-
 
 // init - updates root pkg scripts with required commands, adds tsm-readme.md
 
@@ -93,15 +91,15 @@ if (cli.input.length === 0) {
   cli.showHelp(0);
 }
 
-
+import { main } from '../lib/tsm';
 
 Promise
   .resolve()
   .then(() => {
     cli.flags = Object.assign(cli.flags, {tsc: true});
-    return require('../lib/tsm').main(cli.input[0], cli);
+    return main(cli.input[0], cli);
   })
-  .then(()=>{
+  .then(() => {
     // console.log('Mission complete!');
   })
   .catch(err => {

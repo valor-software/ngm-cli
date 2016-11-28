@@ -1,3 +1,4 @@
+// todo: split to build ts and ngc
 const execa = require('execa');
 
 export function build(project:string, opts) {

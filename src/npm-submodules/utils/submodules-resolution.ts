@@ -1,21 +1,9 @@
+import { TsmOptions } from '../types';
+import { pkgFileName, dependencyKeys, ROOT } from './constants';
 const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
 const readPkg = require('read-pkg');
-import { pkgFileName, dependencyKeys, ROOT } from './constants';
-
-// todo: export to some typings
-// todo: add documentation
-export interface TsmOptions {
-  src: string;
-  dist: string;
-  project: string;
-  pkg: any;
-  /**
-   * Array of local cross dependencies
-   * */
-  cross?: string[];
-}
 
 // todo: order by cross dependencies
 // todo: add --use-local-dependencies alias --local

@@ -1,10 +1,9 @@
 {
-  "name": "tsm-cli",
+  "name": "npm-submodules",
   "version": "0.1.1",
-  "bin": {
-    "ngm": "bin/ngm-cli.js",
-    "tsm": "bin/tsm-cli.js"
-  },
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "module": "index.js",
   "dependencies": {
     "chalk": "*",
     "cpy": "*",
@@ -27,7 +26,6 @@
     "@types/chokidar": "*",
     "@types/node": "*",
     "@types/webpack": "*",
-    "ts-node": "*",
     "webpack": "*",
     "zone.js": "*",
     "typescript": "*",
