@@ -5,14 +5,10 @@ const Listr = require('listr');
 const cpy = require('cpy');
 const del = require('del');
 
-import {
-  buildPkgs, findSubmodules, tasksWatch, ROOT, ngCliConfName
-} from 'npm-submodules';
+import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
+import { build, bundleUmd } from '../tasks';
 
-import { build } from '../tasks';
-import { bundleUmd } from '../tasks/bundle-umd.task';
-
-export function buildCommand({project, verbose, clean, local}) {
+export function buildCommand({project, verbose, clean, local, main}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -61,7 +57,8 @@ export function buildCommand({project, verbose, clean, local}) {
               src: opt.src,
               dist: opt.dist,
               name: opt.pkg.name,
-              main: opt.pkg.main,
+              tsconfig: opt.tsconfig.path,
+              main,
               minify: false
             })
           }))
@@ -69,16 +66,16 @@ export function buildCommand({project, verbose, clean, local}) {
         // task: () => bundleUmd(outDir, moduleConf)
       },
       /*{
-        title: 'Bundling minified version of umd',
-        task: () => bundleUmd(outDir, moduleConf, true),
-        skip: () => local
-      },
-*/
+       title: 'Bundling minified version of umd',
+       task: () => bundleUmd(outDir, moduleConf, true),
+       skip: () => local
+       },
+       */
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }
 
 export function buildTsRun(cli) {
-  const {project, watch, verbose, clean, local} = cli.flags;
-  return buildCommand({project, verbose, clean, local})
+  const {project, watch, verbose, clean, local, main} = cli.flags;
+  return buildCommand({project, verbose, clean, local, main})
     .then(tasks => tasksWatch({project, tasks, watch}));
 }

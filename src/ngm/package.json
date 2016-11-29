@@ -10,6 +10,7 @@
     "zone.js": "*",
     "reflect-metadata": "*",
     "@angular/tsc-wrapped": "*",
-    "@angular/compiler-cli": "*"
+    "@angular/compiler-cli": "*",
+    "awesome-typescript-loader": "*"
   }
 }

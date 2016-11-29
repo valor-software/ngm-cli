@@ -25,7 +25,7 @@ export function getWebpackConfig(config) {
       rules: [
         {
           test: /\.ts$/,
-          loader: `awesome-typescript-loader?declaration=false`,
+          loader: `awesome-typescript-loader?declaration=false&tsconfig=${config.tsconfig}`,
           exclude: [/\.e2e\.ts$/]
         },
         // in main, load css as raw text
