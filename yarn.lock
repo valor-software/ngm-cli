@@ -2,7 +2,11 @@
 # yarn lockfile v1
 
 
-"@angular/compiler-cli@2.2.0":
+"@angular/common@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.2.0.tgz#b52686eafd71e053169ac0257f9135f9583247b6"
+
+"@angular/compiler-cli@2.2.0", "@angular/compiler-cli@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.2.0.tgz#8a06f2d38bfa7f9cb80f129dc81449ec101daa41"
   dependencies:
@@ -10,45 +14,17 @@
     minimist "^1.2.0"
     reflect-metadata "^0.1.2"
 
-"@angular/compiler-cli@^2.2.0":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.2.3.tgz#d632bbf856802a20fc5589cb472f98fef5f011c4"
-  dependencies:
-    "@angular/tsc-wrapped" "^0.3.0"
-    minimist "^1.2.0"
-    reflect-metadata "^0.1.2"
-
-"@angular/compiler@2.2.0":
+"@angular/compiler@2.2.0", "@angular/compiler@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.2.0.tgz#154dfba521f2cce2655610f7d2e5065b04ea86b9"
 
-"@angular/compiler@^2.2.0":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.2.3.tgz#5a96b8b6c620ffe0c3b87b2f254e588abeb77a12"
-
-"@angular/core@2.2.0":
+"@angular/core@2.2.0", "@angular/core@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.2.0.tgz#7a3a8592b6731a65e5a9746ce45419d86d15fe56"
 
-"@angular/core@^2.2.0":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.2.3.tgz#18b09740bf51bdeb906153704e771bce53fecdf6"
-
-"@angular/tsc-wrapped@0.4.0":
+"@angular/tsc-wrapped@0.4.0", "@angular/tsc-wrapped@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-0.4.0.tgz#78cacfd865b11366811baa1f2eec2ef0b63468e6"
-  dependencies:
-    tsickle "^0.1.7"
-
-"@angular/tsc-wrapped@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-0.3.0.tgz#98cdeb5c38d145b187c0ad0397a8d98b217f33f2"
-  dependencies:
-    tsickle "^0.1.7"
-
-"@angular/tsc-wrapped@^0.4.0":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-0.4.1.tgz#4809a58f1a61470c7dcffdb0a5ca18f3d2d57212"
   dependencies:
     tsickle "^0.1.7"
 
@@ -85,6 +61,14 @@ abbrev@1:
 acorn@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
+
+acorn@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.3.tgz#1a3e850b428e73ba6b09d1cc527f5aaad4d03ef1"
+
+ajv-keywords@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.1.1.tgz#02550bc605a3e576041565628af972e06c549d50"
 
 ajv@^4.7.0:
   version "4.9.0"
@@ -221,6 +205,12 @@ async@^1.3.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
+async@^2.1.2:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.1.4.tgz#2d2160c7788032e4dd6cbe2502f1f9a2c8f6cde4"
+  dependencies:
+    lodash "^4.14.0"
+
 async@~0.2.6:
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
@@ -228,6 +218,17 @@ async@~0.2.6:
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
+
+awesome-typescript-loader@2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-2.2.4.tgz#4185d60c035c25515f9c2a747fa5f69b2a001e9e"
+  dependencies:
+    colors "^1.1.2"
+    enhanced-resolve "^2.2.2"
+    loader-utils "^0.2.6"
+    lodash "^4.13.1"
+    object-assign "^4.1.0"
+    source-map-support "^0.4.0"
 
 aws-sign2@~0.6.0:
   version "0.6.0"
@@ -501,6 +502,10 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
+colors@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
+
 combined-stream@^1.0.5, combined-stream@~1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.5.tgz#938370a57b4a51dea2c77c15d5c5fdf895164009"
@@ -741,7 +746,7 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
 
-enhanced-resolve@^2.2.0:
+enhanced-resolve@^2.2.0, enhanced-resolve@^2.2.2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-2.3.0.tgz#a115c32504b6302e85a76269d7a57ccdd962e359"
   dependencies:
@@ -1459,7 +1464,7 @@ loader-runner@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.2.0.tgz#824c1b699c4e7a2b6501b85902d5b862bf45b3fa"
 
-loader-utils@^0.2.11:
+loader-utils@^0.2.11, loader-utils@^0.2.16, loader-utils@^0.2.6:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.16.tgz#f08632066ed8282835dff88dfb52704765adee6d"
   dependencies:
@@ -1472,7 +1477,7 @@ lodash.assign@^4.0.3, lodash.assign@^4.0.6:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
 
-lodash@4.17.2, lodash@^4.3.0:
+lodash@4.17.2, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.3.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -2283,7 +2288,7 @@ stream-to-observable@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/stream-to-observable/-/stream-to-observable-0.1.0.tgz#45bf1d9f2d7dc09bed81f1c307c430e68b84cffe"
 
-string-width@^1.0.1:
+string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
   dependencies:
@@ -2626,6 +2631,30 @@ webpack@2.1.0-beta.25:
     webpack-sources "^0.1.0"
     yargs "^4.7.1"
 
+webpack@2.1.0-beta.27:
+  version "2.1.0-beta.27"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.1.0-beta.27.tgz#06cb802e44118159e46b7533ae76b0d84c8c89d8"
+  dependencies:
+    acorn "^4.0.3"
+    ajv "^4.7.0"
+    ajv-keywords "^1.1.1"
+    async "^2.1.2"
+    enhanced-resolve "^2.2.0"
+    interpret "^1.0.0"
+    loader-runner "^2.2.0"
+    loader-utils "^0.2.16"
+    memory-fs "~0.3.0"
+    mkdirp "~0.5.0"
+    node-libs-browser "^1.0.0"
+    object-assign "^4.0.1"
+    source-map "^0.5.3"
+    supports-color "^3.1.0"
+    tapable "~0.2.3"
+    uglify-js "~2.7.3"
+    watchpack "^1.0.0"
+    webpack-sources "^0.1.0"
+    yargs "^6.0.0"
+
 which-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
@@ -2719,6 +2748,12 @@ yargs-parser@^2.4.1:
     camelcase "^3.0.0"
     lodash.assign "^4.0.6"
 
+yargs-parser@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-4.1.0.tgz#313df030f20124124aeae8fbab2da53ec28c56d7"
+  dependencies:
+    camelcase "^3.0.0"
+
 yargs@^4.7.1:
   version "4.8.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
@@ -2737,6 +2772,25 @@ yargs@^4.7.1:
     window-size "^0.2.0"
     y18n "^3.2.1"
     yargs-parser "^2.4.1"
+
+yargs@^6.0.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-6.4.0.tgz#816e1a866d5598ccf34e5596ddce22d92da490d4"
+  dependencies:
+    camelcase "^3.0.0"
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
+    get-caller-file "^1.0.1"
+    os-locale "^1.4.0"
+    read-pkg-up "^1.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^1.0.2"
+    which-module "^1.0.0"
+    window-size "^0.2.0"
+    y18n "^3.2.1"
+    yargs-parser "^4.1.0"
 
 yargs@~3.10.0:
   version "3.10.0"

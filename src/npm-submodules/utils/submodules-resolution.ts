@@ -1,4 +1,4 @@
-import { TsmOptions } from '../types';
+// import { TsmOptions } from '../types';
 import { pkgFileName, dependencyKeys, ROOT } from './constants';
 const fs = require('fs');
 const path = require('path');
@@ -55,6 +55,7 @@ function resolveOptions(project: string, opt): TsmOptions {
   // tsconfig project
   return {
     src, dist,
+    tsconfig: opt.tsconfig,
     project: path.relative(ROOT, tsConfigDir),
     pkg: readPkg.sync(src)
   };

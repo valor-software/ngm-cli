@@ -1,4 +1,5 @@
 import webpack = require('webpack');
+const  TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 
 export function getWebpackConfig(config) {
   return {
@@ -25,8 +26,14 @@ export function getWebpackConfig(config) {
       rules: [
         {
           test: /\.ts$/,
-          loader: `awesome-typescript-loader?declaration=false&tsconfig=${config.tsconfig}`,
-          exclude: [/\.e2e\.ts$/]
+          loader: `awesome-typescript-loader`,
+          exclude: [/\.e2e\.ts$/],
+          query: {
+            compilerOptions: {
+              declaration: false
+            },
+            configFileName: config.tsconfig
+          }
         },
         // in main, load css as raw text
         {
@@ -51,6 +58,7 @@ export function getWebpackConfig(config) {
     },
 
     plugins: [
+      new TsConfigPathsPlugin(),
       // fix the warning in ./~/@angular/core/src/linker/system_js_ng_module_factory_loader.js
       new webpack.ContextReplacementPlugin(
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,

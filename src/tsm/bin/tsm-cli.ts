@@ -94,7 +94,11 @@ import { main } from '../lib/tsm';
 
 Promise
   .resolve()
-  .then(() => main(cli.input[0], cli))
+  .then(() => {
+    // default verbose to true
+    cli.flags.verbose = cli.flags.verbose !== false;
+    return main(cli.input[0], cli);
+  })
   .catch(err => {
     console.error(`\n`, err.stderr || err);
     process.exit(1);

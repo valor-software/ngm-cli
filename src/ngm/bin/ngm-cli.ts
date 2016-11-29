@@ -4,6 +4,10 @@
 // todd: add test and e2e command (cut of from publish tasks)
 // todo: move help to separate file
 // todo: use Observables
+// todo: add rollup bundle
+// todo: disable bundling in watch mode
+// todo: add info about --main? read it from package.json?
+// todo: validation package.json
 
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
@@ -94,8 +98,13 @@ import { main } from '../lib/ngm';
 
 Promise
   .resolve()
-  .then(() => main(cli.input[0], cli))
+  .then(() => {
+    // default verbose to true
+    cli.flags.verbose = cli.flags.verbose !== false;
+    return main(cli.input[0], cli);
+  })
   .catch(err => {
-    console.error(`\n`, err.stderr || err);
+    console.error(`\n`, err.stderr);
+    console.error(`\n`, err);
     process.exit(1);
   });

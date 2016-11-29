@@ -8,7 +8,7 @@ const del = require('del');
 import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
 import { build, bundleUmd } from '../tasks';
 
-export function buildCommand({project, verbose, clean, local, main}) {
+export function buildCommand({project, verbose, clean, local, main, watch}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -54,28 +54,40 @@ export function buildCommand({project, verbose, clean, local, main}) {
           opts.map(opt => ({
             title: `Bundling ${opt.pkg.name}`,
             task: () => bundleUmd({
+              main,
               src: opt.src,
               dist: opt.dist,
               name: opt.pkg.name,
               tsconfig: opt.tsconfig.path,
-              main,
               minify: false
             })
           }))
         )
-        // task: () => bundleUmd(outDir, moduleConf)
       },
-      /*{
-       title: 'Bundling minified version of umd',
-       task: () => bundleUmd(outDir, moduleConf, true),
-       skip: () => local
-       },
-       */
+      {
+        title: 'Bundling minified umd version',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Bundling ${opt.pkg.name}`,
+            task: () => bundleUmd({
+              main,
+              src: opt.src,
+              dist: opt.dist,
+              name: opt.pkg.name,
+              tsconfig: opt.tsconfig.path,
+              minify: true
+            })
+          }))
+        ),
+        skip: () => watch
+      },
+
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }
 
 export function buildTsRun(cli) {
-  const {project, watch, verbose, clean, local, main} = cli.flags;
-  return buildCommand({project, verbose, clean, local, main})
+  const {project, watch, verbose, clean, local} = cli.flags;
+  let main = cli.flags.main || 'index.ts';
+  return buildCommand({project, verbose, clean, local, main, watch})
     .then(tasks => tasksWatch({project, tasks, watch}));
 }
