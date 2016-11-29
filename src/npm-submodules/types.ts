@@ -1,6 +1,6 @@
 // todo: export to some typings
 // todo: add documentation
-export interface TsmOptions {
+declare interface TsmOptions {
   src: string;
   dist: string;
   project: string;
@@ -9,11 +9,12 @@ export interface TsmOptions {
    * Array of local cross dependencies
    * */
   cross?: string[];
+  tsconfig: {path: string; config: any;}
 }
 
-export interface BuildOptions {
+declare interface BuildOptions {
   project: string;
   verbose: boolean;
   clean: boolean;
-  local: boolean
+  local: boolean;
 }

@@ -1,4 +1,4 @@
-import { TsmOptions } from '../types';
+// import { TsmOptions } from '../types';
 import { findSubmodules } from '../utils';
 import { npmPublish, prepublishGitCheck, npmLink, npmInstall } from '../tasks';
 import { npmLinkCommand } from './link.command';

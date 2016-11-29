@@ -1,4 +1,4 @@
-import { TsmOptions } from '../types';
+// import { TsmOptions } from '../types';
 
 export function cleanDist(opts: TsmOptions[]){
 

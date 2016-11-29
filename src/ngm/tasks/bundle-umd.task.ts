@@ -42,7 +42,6 @@ export function bundleUmd({src, dist, name, main, tsconfig, minify}) {
 
   return new Promise((resolve, reject) => {
     webpackCompiler.run((err, stats) => {
-      console.log(err, stats)
       if (err) {
         if (stats) {
           process.stdout.write(stats.toString(webpackOutputOptions) + '\n');

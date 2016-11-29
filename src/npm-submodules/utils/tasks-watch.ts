@@ -23,6 +23,7 @@ export function tasksWatch({project, tasks, watch}){
     isRunning = true;
     return tasks.run()
       .then(() => {
+        console.log(`\n-------------------------------------\n`);
         isRunning = false;
       })
       .catch(err => {

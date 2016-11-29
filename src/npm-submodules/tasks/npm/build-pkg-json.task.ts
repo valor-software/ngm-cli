@@ -1,7 +1,7 @@
 import path = require('path');
 import { ROOT } from '../../utils/constants';
 import { mergePackageJson} from '../../utils/merge-package-json';
-import { TsmOptions } from '../../types';
+// import { TsmOptions } from '../../types';
 // todo: replace
 const readPkg = require('read-pkg');
 const writePkg = require('write-pkg');

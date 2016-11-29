@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "es6",
     "declaration" :true,
-    "sourceMap": false,
+    "inlineSourceMap": true,
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": false,

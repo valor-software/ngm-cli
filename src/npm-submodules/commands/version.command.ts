@@ -1,4 +1,4 @@
-import { TsmOptions } from '../types';
+// import { TsmOptions } from '../types';
 const execa = require('execa');
 import Listr = require('listr');
 import { findSubmodules } from '../utils/submodules-resolution';
