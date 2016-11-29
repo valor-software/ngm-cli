@@ -83,11 +83,17 @@ const cli = meow(`
     m: 'message',
     p: 'project',
     w: 'watch',
+    v: 'version',
     local: 'use-local-dependencies alias'
   }
 });
 
 updateNotifier({pkg: cli.pkg}).notify();
+
+if (cli.flags.version) {
+  console.log(`${cli.pkg.name} ${cli.pkg.version}`);
+  process.exit();
+}
 
 // show help and exit by default
 if (cli.input.length === 0) {
@@ -104,7 +110,7 @@ Promise
     return main(cli.input[0], cli);
   })
   .catch(err => {
-    console.error(`\n`, err.stderr);
+    console.error(`\n` && err.stderr || '');
     console.error(`\n`, err);
     process.exit(1);
   });
