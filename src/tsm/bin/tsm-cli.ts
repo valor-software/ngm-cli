@@ -96,6 +96,12 @@ if (cli.input.length === 0) {
   cli.showHelp(0);
 }
 
+// project flag is mandatory for now
+if (!cli.flags.project) {
+  console.error('Please provide path to your projects source folder, `-p DIR` ');
+  process.exit(1);
+}
+
 import { main } from '../lib/tsm';
 
 Promise
