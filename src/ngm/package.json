@@ -1,6 +1,6 @@
 {
   "name": "ngm-cli",
-  "version": "0.3.4-0",
+  "version": "0.3.4",
   "bin": {
     "ngm": "bin/ngm-cli.js"
   },
