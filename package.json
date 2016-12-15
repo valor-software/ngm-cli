@@ -56,7 +56,7 @@
     "split": "1.0.0",
     "stream-to-observable": "0.2.0",
     "tsconfig": "5.0.3",
-    "tsm-cli": "0.3.0",
+    "tsm-cli": "^0.3.0",
     "typescript": "2.1.1",
     "update-notifier": "1.0.2",
     "webpack": "2.1.0-beta.27",

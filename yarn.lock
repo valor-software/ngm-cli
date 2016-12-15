@@ -1758,12 +1758,12 @@ npm-submodules@0.2.0:
     webpack "2.1.0-beta.27"
     write-pkg "2.0.0"
 
-npm-submodules@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/npm-submodules/-/npm-submodules-0.3.0.tgz#e82499119c2c219fd6db8ee9973eccfd54cbbba6"
+npm-submodules@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/npm-submodules/-/npm-submodules-0.3.5.tgz#98f861d1fd6837bf518e51c4b9067e0012e06262"
   dependencies:
-    "@angular/compiler" "2.2.0"
-    "@angular/core" "2.2.0"
+    "@angular/compiler" "^2.2.0"
+    "@angular/core" "^2.2.0"
     "@types/chokidar" "1.4.29"
     "@types/node" "6.0.49"
     "@types/webpack" "2.0.0"
@@ -2520,11 +2520,11 @@ tsickle@^0.1.7:
     source-map "^0.4.2"
     source-map-support "^0.3.1"
 
-tsm-cli@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/tsm-cli/-/tsm-cli-0.3.0.tgz#b0bc9a640dbd7fc8a3fbbc519caad6f28387b499"
+tsm-cli@^0.3.0:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/tsm-cli/-/tsm-cli-0.3.5.tgz#015305a2a8f968a59c3cd86fa6d000ee7a448d0d"
   dependencies:
-    npm-submodules "0.3.0"
+    npm-submodules "0.3.5"
 
 tty-browserify@0.0.0:
   version "0.0.0"
