@@ -26,10 +26,8 @@ const cli = meow(`
         --no-local      Use version numbers from local submodules when building package.json,
                           usually needed only for publish command
         -w, --watch     Watch input files
-        --verbose   Enable verbose mode
         --clean         Cleaning dist folders
                           It removes folder, so you will need to rerun commands like 'link', etc...
-        
       
     ----------------------------------------------------------------    
     link  - runs 'npm link' in each submodule dist folder
@@ -41,7 +39,8 @@ const cli = meow(`
           -p DIRECTORY,   Compile the project in the given directory
             --project DIRECTORY
       Optional options:
-           --no-deep    By default local submodules will be linked to each other        
+           --no-deep    By default local submodules will be linked to each other
+           --here       Links submodules to root package
       
     ----------------------------------------------------------------
     publish - runs 'npm publish' in each dist submodule folders, how it works:
