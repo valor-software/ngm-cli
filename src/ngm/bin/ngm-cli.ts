@@ -30,10 +30,10 @@ const cli = meow(`
         --no-local      Use version numbers from local submodules when building package.json,
                           usually needed only for publish command
         -w, --watch     Watch input files
-        --verbose   Enable verbose mode
+        --verbose       Enable verbose mode
         --clean         Cleaning dist folders
                           It removes folder, so you will need to rerun commands like 'link', etc...
-        
+        --skip-bundles  Works only in --watch mode, allows to skip umd bundling
       
     ----------------------------------------------------------------    
     link  - runs 'npm link' in each submodule dist folder
