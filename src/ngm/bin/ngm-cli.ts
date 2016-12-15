@@ -71,12 +71,14 @@ const cli = meow(`
       
     ----------------------------------------------------------------
     version - runs 'npm version <version>' in each submodule and than in root folder
-    Usage:
-        $ tsm version prerelease -p src
-    Mandatory options:
-        -m MESSAGE,             Commit message when creating a version commit
-          --message MESSAGE
-        --no-git-tag-version    Do not create a version commit and tag (applied only to root folder)
+      Usage:
+          $ tsm version prerelease -p src
+      Mandatory options:
+          -m MESSAGE,             Commit message when creating a version commit
+            --message MESSAGE
+          --no-git-tag-version    Do not create a version commit and tag (applied only to root folder)
+      Optional options:
+          --skip-push             Skip pushing of version commit and tags
     ----------------------------------------------------------------
     
 `, {
