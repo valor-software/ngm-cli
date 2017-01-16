@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "noEmitHelpers": false,
     "declaration": true,
     "skipLibCheck": true,
@@ -17,5 +17,8 @@
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "genDir": "../temp/factories"
+  }
 }
