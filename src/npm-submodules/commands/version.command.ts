@@ -1,5 +1,6 @@
 // import { TsmOptions } from '../types';
 const execa = require('execa');
+const path = require('path');
 import Listr = require('listr');
 import { findSubmodules } from '../utils/submodules-resolution';
 import { npmVersion } from '../tasks/npm/npm-version.task';
@@ -34,7 +35,23 @@ export function run(cli) {
         },
         {
           title: 'Version root package',
-          task: () => npmVersion({yarn, src: '.', version, message, noGitTagVersion})
+          task: () => npmVersion({yarn, src: '.', version, message, noGitTagVersion: true})
+        },
+        {
+          title: 'Create version commit',
+          task: () => {
+            const pkg = require(path.resolve('package.json'));
+            return execa.stdout('git', ['commit', '-m', message || pkg.version]);
+          },
+          skip: () => noGitTagVersion
+        },
+        {
+          title: 'Add tag version',
+          task: () => {
+            const pkg = require(path.resolve('package.json'));
+            return execa.stdout('git', ['tag', pkg.version]);
+          },
+          skip: () => noGitTagVersion
         },
         {
           title: 'Push to origin with tags',
