@@ -41,7 +41,7 @@ export function run(cli) {
           title: 'Create version commit',
           task: () => {
             const pkg = require(path.resolve('package.json'));
-            return execa.stdout('git', ['commit', '-am', message || pkg.version]);
+            return execa.stdout('git', ['commit', '-am', message || `v${pkg.version}`]);
           },
           skip: () => noGitTagVersion
         },
@@ -49,7 +49,7 @@ export function run(cli) {
           title: 'Add tag version',
           task: () => {
             const pkg = require(path.resolve('package.json'));
-            return execa.stdout('git', ['tag', pkg.version]);
+            return execa.stdout('git', ['tag', `v${pkg.version}`]);
           },
           skip: () => noGitTagVersion
         },
