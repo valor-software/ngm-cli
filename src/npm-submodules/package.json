@@ -1,6 +1,6 @@
 {
   "name": "npm-submodules",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": "index.js",
   "typings": "index.d.ts",
   "module": "index.js",
