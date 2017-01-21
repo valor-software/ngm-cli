@@ -1,4 +1,5 @@
 import path = require('path');
+import fs = require('fs');
 import { ROOT } from 'npm-submodules';
 import { getWebpackConfig } from '../models/webpack-umd.config';
 const webpack = require('webpack');
@@ -18,13 +19,19 @@ const webpackOutputOptions = {
 
 // export function bundleUmd(dir, moduleConf, minify) {
 export function bundleUmd({src, dist, name, main, tsconfig, minify}) {
-  const config = getWebpackConfig({
+   let local = {};
+
+  if (fs.existsSync('./webpack.config.js')) {
+    local = require(path.join(process.cwd(), 'webpack.config.js'));
+  }
+
+  const config = Object.assign(getWebpackConfig({
     name: !minify ? `${name}.umd` : `${name}.umd.min`,
     root: path.resolve(ROOT, src),
     entry: path.resolve(ROOT, src, main),
     output: path.resolve(dist, bundlesDir),
     tsconfig: tsconfig
-  });
+  }), local);
 
   if (minify) {
     config.plugins.unshift(new webpack.optimize.UglifyJsPlugin({
