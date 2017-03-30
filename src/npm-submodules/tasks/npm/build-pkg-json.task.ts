@@ -19,6 +19,7 @@ export function buildPkgJson(opts:TsmOptions, localDependencies, options: {local
   const module = readPkg.sync(opts.src);
   // merge packages
   const pkg = mergePackageJson({base, module, localDependencies});
+  pkg.version = pkg.version || base.version;
   // write packages
   // todo: for some reason, read pkg ignores readme.md and says that readme not found, and this is not true
   delete pkg.readme;
