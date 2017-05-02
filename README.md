@@ -1,4 +1,6 @@
 # npm-submodules
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/valor-software/npm-submodules.svg)](https://greenkeeper.io/)
 Simple way to manage typescipt | angular2 submodules from one repository
 
 This is a base lib 
