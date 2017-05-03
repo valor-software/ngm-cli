@@ -20,7 +20,7 @@ export function getWebpackConfig(config) {
     },
 
     // require those dependencies but don't bundle them
-    externals: [/^\@angular\//, /^rxjs\//],
+    externals: [/^\@angular\//, /^rxjs\//].concat(config.externals),
 
     module: {
       rules: [

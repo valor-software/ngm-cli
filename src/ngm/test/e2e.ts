@@ -16,5 +16,6 @@ bundleUmd({
   name: opt.pkg.name,
   tsconfig: opt.tsconfig,
   main,
-  minify: false
+  minify: false,
+  externals: []
 });

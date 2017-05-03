@@ -8,7 +8,7 @@ const del = require('del');
 import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
 import { build, bundleUmd } from '../tasks';
 
-export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {
+export function buildCommand({project, verbose, clean, local, main, watch, skipBundles, externals}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -59,7 +59,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
               dist: opt.dist,
               name: opt.pkg.name,
               tsconfig: opt.tsconfig.path,
-              minify: false
+              minify: false,
+              externals: externals
             })
           }))
         ),
@@ -76,7 +77,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
               dist: opt.dist,
               name: opt.pkg.name,
               tsconfig: opt.tsconfig.path,
-              minify: true
+              minify: true,
+              externals: externals
             })
           }))
         ),
@@ -89,6 +91,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
 export function buildTsRun(cli) {
   const {project, watch, verbose, clean, local, skipBundles} = cli.flags;
   let main = cli.flags.main || 'index.ts';
-  return buildCommand({project, verbose, clean, local, main, watch, skipBundles})
+  const externals = cli.flags.external || [];
+  return buildCommand({project, verbose, clean, local, main, watch, skipBundles, externals})
     .then(tasks => tasksWatch({project, tasks, watch}));
 }
