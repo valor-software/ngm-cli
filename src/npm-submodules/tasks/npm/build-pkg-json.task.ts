@@ -18,6 +18,7 @@ export function buildPkgJson(opts:TsmOptions, localDependencies, options: {local
   // read package.json in module root folder
   const module = readPkg.sync(opts.src);
   // merge packages
+  localDependenciesVersionFallback(base, localDependencies);
   const pkg = mergePackageJson({base, module, localDependencies});
   pkg.version = pkg.version || base.version;
   // write packages
@@ -45,4 +46,10 @@ export function buildPkgs(tsmOptions:TsmOptions[], options: {local: boolean}) {
   return Promise.all(tsmOptions.map(optPkg => buildPkgJson(optPkg, localDependencies, options)));
   // 4. validate required fields in packages
   // todo:
+}
+
+function localDependenciesVersionFallback(base, localDependencies) {
+  for (let pkgName in localDependencies) {
+    localDependencies[pkgName] = localDependencies[pkgName] || base.version;
+  }
 }

@@ -6,6 +6,7 @@
   "scripts": {
     "tbuild": "node dist/tsm-cli/bin/tsm-cli.js build -p src",
     "tlink": "node dist/tsm-cli/bin/tsm-cli.js link -p src",
+    "tpublish": "node dist/tsm-cli/bin/tsm-cli.js publish -p src --yolo",
     "build": "tsm build -p src --verbose",
     "link": "tsm link -p src --verbose",
     "test": "echo 'all good, move on ;)'",
