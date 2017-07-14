@@ -21,7 +21,7 @@ export function buildCommand({project, verbose, clean, local}) {
         task: () => new Listr(
           opts.map(opt => ({
             title: `Cleaning ${opt.dist}`,
-            task: () => del(opt.dist)
+            task: () => del([opt.dist + '/**', '!' + opt.dist])
           }))
         ),
         skip: () => !clean

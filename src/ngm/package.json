@@ -6,6 +6,8 @@
   "dependencies": {
     "npm-submodules": "*",
     "@angular/compiler-cli": "*",
-    "awesome-typescript-loader": "*"
+    "awesome-typescript-loader": "*",
+    "node-sass": "*",
+    "node-sass-tilde-importer": "*"
   }
 }

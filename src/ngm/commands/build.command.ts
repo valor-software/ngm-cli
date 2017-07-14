@@ -1,12 +1,16 @@
 // todo: add load from config file, TBD
 
 import path = require('path');
+
 const Listr = require('listr');
 const cpy = require('cpy');
 const del = require('del');
 
 import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
 import { build, bundleUmd } from '../tasks';
+import { inlineResources } from '../helpers/inline-resources';
+
+const tmpFolder = (folder) => path.join(folder, '../.tmp');
 
 export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {
   // 1. clean dist folders
@@ -16,18 +20,23 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
   // 3. compile ts
   return findSubmodules(project, {local})
     .then(opts => new Listr([
+      /**
+       * 1. Clean /dist folders
+       * delete only dist content, but not folders itself
+       * no not break npm link
+       */
       {
         title: 'Clean dist folders',
         task: () => new Listr(
           opts.map(opt => ({
             title: `Cleaning ${opt.dist}`,
-            task: () => del(opt.dist)
+            task: () => del([opt.dist + '/**', '!' + opt.dist])
           }))
         ),
         skip: () => !clean
       },
       {
-        title: 'Copy md files and license',
+        title: 'Copy *.md and license files',
         task: () => Promise.all(opts.map(opt =>
           cpy(['*.md', 'LICENSE'], opt.dist)
             .then(() =>
@@ -36,15 +45,55 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         ))
       },
       {
-        title: "Build package.json files",
+        title: 'Build package.json files',
         task: () => buildPkgs(opts, {local})
+      },
+      {
+        title: 'Copy source files to temporary folder',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Copying ${opt.pkg.name} source files to ${opt.src}`,
+            task: () => cpy(
+              ['**/*.*', '!node_modules'],
+              tmpFolder(path.relative(opt.project, opt.dist)),
+              {
+                cwd: opt.project,
+                parents: true,
+                overwrite: true,
+                nodir: true
+              }
+            )
+          }))
+        )
+      },
+      /**
+       * 3. Inline template (.html) and style (.css) files into the component .ts files.
+       *    We do this on the /.tmp folder to avoid editing the original /src files
+       */
+      {
+        title: 'Inline template and style files into the components',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Inlining ${opt.pkg.name} templates and styles`,
+            task: () => inlineResources(tmpFolder(opt.dist))
+          }))
+        )
       },
       {
         title: 'Build projects',
         task: () => new Listr(
           opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
-            task: () => build(opt.project)
+            task: () => build(tmpFolder(opt.dist))
+          }))
+        )
+      },
+      {
+        title: 'Clean .tmp folders',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Cleaning ${tmpFolder(opt.dist)}`,
+            task: () => del(tmpFolder(opt.dist))
           }))
         )
       },
@@ -81,7 +130,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
           }))
         ),
         skip: () => watch || skipBundles
-      },
+      }
 
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }

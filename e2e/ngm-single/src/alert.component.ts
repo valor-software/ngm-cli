@@ -1,19 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-const ALERT_TEMPLATE = `
-  <div class="alert" role="alert" [ngClass]="classes" *ngIf="!closed">
-    <button *ngIf="dismissible" type="button" class="close" (click)="onClose()" (touch)="onClose()">
-      <span aria-hidden="true">&times;</span>
-      <span class="sr-only">Close</span>
-    </button>
-    <ng-content></ng-content>
-  </div>
-  `;
-
-// TODO: templateUrl
 @Component({
   selector: 'alert',
-  template: ALERT_TEMPLATE
+  templateUrl: './alert.component.html'
 })
 export class AlertComponent implements OnInit {
   @Input() public type:string = 'warning';
