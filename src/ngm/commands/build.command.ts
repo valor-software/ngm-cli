@@ -89,6 +89,24 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         )
       },
       {
+        title: 'Copy assets to dist folder',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Copying ${opt.pkg.name} assets to ${opt.src}`,
+            task: () => cpy(
+              ['**/*', '!node_modules', '!**/*.{ts, html}', '!package.json', '!tsconfig.json'],
+              path.relative(opt.project, opt.dist),
+              {
+                cwd: opt.project,
+                parents: true,
+                overwrite: true,
+                nodir: true
+              }
+            )
+          }))
+        )
+      },
+      {
         title: 'Clean .tmp folders',
         task: () => new Listr(
           opts.map(opt => ({
