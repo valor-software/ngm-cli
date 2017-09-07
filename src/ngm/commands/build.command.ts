@@ -10,8 +10,6 @@ import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
 import { build, bundleUmd } from '../tasks';
 import { inlineResources } from '../helpers/inline-resources';
 
-const tmpFolder = (folder) => path.join(folder, '../.tmp');
-
 export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
@@ -55,7 +53,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
             title: `Copying ${opt.pkg.name} source files to ${opt.src}`,
             task: () => cpy(
               ['**/*.*', '!node_modules'],
-              tmpFolder(path.relative(opt.project, opt.dist)),
+              // opt.tmp,
+              path.resolve(opt.tmp),
               {
                 cwd: opt.project,
                 parents: true,
@@ -75,7 +74,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Inlining ${opt.pkg.name} templates and styles`,
-            task: () => inlineResources(tmpFolder(opt.dist))
+            task: () => inlineResources(opt.tmp)
           }))
         )
       },
@@ -84,7 +83,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
-            task: () => build(tmpFolder(opt.dist))
+            task: () => build(opt.tmp)
           }))
         )
       },
@@ -110,8 +109,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         title: 'Clean .tmp folders',
         task: () => new Listr(
           opts.map(opt => ({
-            title: `Cleaning ${tmpFolder(opt.dist)}`,
-            task: () => del(tmpFolder(opt.dist))
+            title: `Cleaning ${opt.tmp}`,
+            task: () => del(opt.tmp, {force: true})
           }))
         )
       },

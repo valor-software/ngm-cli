@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": "../../dist/mod-2",
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noEmitHelpers": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "noImplicitAny": false,
+    "noEmitOnError": false,
+    "lib": ["dom", "es6"]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "../../temp/mod-2/factories"
+  }
+}
