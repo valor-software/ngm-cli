@@ -28,7 +28,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Cleaning ${opt.dist}`,
-            task: () => del([opt.dist + '/**', '!' + opt.dist])
+            task: () => del(path.join(opt.dist, '**/*'))
           }))
         ),
         skip: () => !clean
@@ -38,8 +38,11 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => Promise.all(opts.map(opt =>
           cpy(['*.md', 'LICENSE'], opt.dist)
             .then(() =>
-              cpy([path.join(opt.src, '*.md'),
-                path.join(opt.src, 'LICENSE')], opt.dist))
+              cpy([
+                  path.join(opt.src, '*.md'),
+                  path.join(opt.src, 'LICENSE')
+                ],
+                opt.dist))
         ))
       },
       {
@@ -89,6 +92,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
       },
       {
         title: 'Copy assets to dist folder',
+        skip: () => true,
         task: () => new Listr(
           opts.map(opt => ({
             title: `Copying ${opt.pkg.name} assets to ${opt.src}`,
@@ -106,22 +110,13 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         )
       },
       {
-        title: 'Clean .tmp folders',
-        task: () => new Listr(
-          opts.map(opt => ({
-            title: `Cleaning ${opt.tmp}`,
-            task: () => del(opt.tmp, {force: true})
-          }))
-        )
-      },
-      {
         title: 'Bundling umd version',
         task: () => new Listr(
           opts.map(opt => ({
             title: `Bundling ${opt.pkg.name}`,
             task: () => bundleUmd({
               main,
-              src: opt.src,
+              src: opt.tmp,
               dist: opt.dist,
               name: opt.pkg.name,
               tsconfig: opt.tsconfig.path,
@@ -129,7 +124,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
             })
           }))
         ),
-        skip: () => watch && skipBundles
+        skip: () => watch || skipBundles
       },
       {
         title: 'Bundling minified umd version',
@@ -138,7 +133,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
             title: `Bundling ${opt.pkg.name}`,
             task: () => bundleUmd({
               main,
-              src: opt.src,
+              src: opt.tmp,
               dist: opt.dist,
               name: opt.pkg.name,
               tsconfig: opt.tsconfig.path,
@@ -147,8 +142,16 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
           }))
         ),
         skip: () => watch || skipBundles
+      },
+      {
+        title: 'Clean .tmp folders',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Cleaning ${opt.tmp}`,
+            task: () => del(path.join(opt.tmp, '**/*'), {force: true})
+          }))
+        )
       }
-
     ], {renderer: verbose ? 'verbose' : 'default'}));
 }
 

@@ -30,8 +30,10 @@ export function getWebpackConfig(config) {
           exclude: [/\.e2e\.ts$/],
           query: {
             compilerOptions: {
-              declaration: false
+              declaration: false,
+              emitDecoratorMetadata: false
             },
+            transpileOnly: true,
             configFileName: config.tsconfig
           }
         },
