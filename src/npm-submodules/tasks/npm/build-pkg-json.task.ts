@@ -39,7 +39,7 @@ export function buildPkgs(tsmOptions:TsmOptions[], options: {local: boolean}) {
   // if options.local === true, resolve local dependencies as file paths: "module-a": "../module-a"
   // in general you need non relative dependencies only before publishing
   const localDependencies = tsmOptions.reduce((memo, val)=>{
-    memo[val.pkg.name] = options.local === false ? val.pkg.version : path.resolve(val.dist);
+    memo[val.pkg.name] = !options.local ? val.pkg.version : path.resolve(val.dist);
     return memo;
   }, {});
   // 3. merge packages
