@@ -3,6 +3,7 @@
 declare interface TsmOptions {
   src: string;
   dist: string;
+  tmp: string;
   project: string;
   pkg: any;
   /**

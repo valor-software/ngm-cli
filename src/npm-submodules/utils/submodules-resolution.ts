@@ -1,5 +1,6 @@
 // import { TsmOptions } from '../types';
 import { pkgFileName, dependencyKeys, ROOT } from './constants';
+
 const fs = require('fs');
 const path = require('path');
 const tsconfig = require('tsconfig');
@@ -8,13 +9,16 @@ const readPkg = require('read-pkg');
 // todo: order by cross dependencies
 // todo: add --use-local-dependencies alias --local
 
+// should in the same folder as dist
+const _tmp = '.tmp';
+
 /**
  * Will try to find package.json in src folder
  * if not found will search in 1st level of directories
  * Returns list of directories with package.json
  * project - string, relative path to folder
  */
-export function findSubmodules(project: string, options?: {local: boolean}) {
+export function findSubmodules(project: string, options?: { local: boolean }) {
   return listDirs(project)
     .then(dirs => orderByCrossDeps(dirs
       .filter(dir => isModuleRoot(dir))
@@ -46,15 +50,23 @@ function resolveOptions(project: string, opt): TsmOptions {
   const tsConfigDir = path.dirname(opt.tsconfig.path);
   const relTsOutDir = path.relative(ROOT, path.resolve(tsConfigDir, tsOutDir));
   const moduleDir = path.relative(project, opt.dir);
+  // submodule root
+  const src = opt.dir;
   // tsc out dir
   const dist = relTsOutDir.indexOf(moduleDir) == -1
     ? path.join(relTsOutDir, moduleDir)
     : relTsOutDir;
-  // submodule root
-  const src = opt.dir;
+
+  // convert tsout ( '../dist' --> '../.tmp' )
+  const _distParsed = path.parse(tsOutDir);
+  let tmp = moduleDir && moduleDir === _distParsed.base
+    // '../dist/module-1'
+    ? path.join(src, path.format(Object.assign(path.parse(_distParsed.dir), {base: _tmp})), moduleDir)
+    //   '../dist'
+    : path.resolve(src, path.format(Object.assign({}, _distParsed, { base: _tmp })));
   // tsconfig project
   return {
-    src, dist,
+    src, dist, tmp,
     tsconfig: opt.tsconfig,
     project: path.relative(ROOT, tsConfigDir),
     pkg: readPkg.sync(src)

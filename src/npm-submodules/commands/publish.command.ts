@@ -41,16 +41,7 @@ export function run(cli, {buildCommand}) {
         },
         {
           title: 'Link submodules',
-          task: () => npmLinkCommand({project, local: true, deep: true, verbose, yarn}),
-          skip: () => yolo
-        },
-        {
-          title: 'Link submodules to local project',
-          task: () => new Listr(opts.map(opt => ({
-              title: `npm link ${opt.pkg.name}`,
-              task: () => npmLink({yarn, cwd: '.', module: opt.pkg.name})
-            }))
-          ),
+          task: () => npmLinkCommand({project, local: true, deep: true, verbose, yarn, here: true}),
           skip: () => yolo
         },
         // publish

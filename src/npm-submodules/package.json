@@ -1,6 +1,5 @@
 {
   "name": "npm-submodules",
-  "version": "0.3.3",
   "main": "index.js",
   "typings": "index.d.ts",
   "module": "index.js",
@@ -20,11 +19,6 @@
     "tsconfig": "*",
     "update-notifier": "*",
     "write-pkg": "*",
-    "@angular/compiler": "*",
-    "@angular/core": "*",
-    "@types/chokidar": "*",
-    "@types/node": "*",
-    "@types/webpack": "*",
     "webpack": "*",
     "typescript": "*"
   }

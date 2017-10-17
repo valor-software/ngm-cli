@@ -1,16 +1,13 @@
 {
   "name": "ngm-cli",
-  "version": "0.3.3",
   "bin": {
     "ngm": "bin/ngm-cli.js"
   },
   "dependencies": {
     "npm-submodules": "*",
-    "rxjs": "*",
-    "zone.js": "*",
-    "reflect-metadata": "*",
-    "@angular/tsc-wrapped": "*",
     "@angular/compiler-cli": "*",
-    "awesome-typescript-loader": "*"
+    "awesome-typescript-loader": "*",
+    "node-sass": "*",
+    "node-sass-tilde-importer": "*"
   }
 }
