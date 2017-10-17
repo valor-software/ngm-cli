@@ -17,13 +17,14 @@ const webpackOutputOptions = {
 };
 
 // export function bundleUmd(dir, moduleConf, minify) {
-export function bundleUmd({src, dist, name, main, tsconfig, minify}) {
+export function bundleUmd({src, dist, name, main, tsconfig, minify, externals}) {
   const config = getWebpackConfig({
     name: !minify ? `${name}.umd` : `${name}.umd.min`,
     root: path.resolve(ROOT, src),
     entry: path.resolve(ROOT, src, main),
     output: path.resolve(dist, bundlesDir),
-    tsconfig: tsconfig
+    tsconfig: tsconfig,
+    externals: externals
   });
 
   if (minify) {
