@@ -106,6 +106,7 @@ function inlineStyle(content, urlResolver) {
         const styleContent = styleFile.endsWith('.scss') ? buildSass(originContent, styleFile) : originContent;
         const shortenedStyle = styleContent
           .replace(/([\n\r]\s*)+/gm, ' ')
+          .replace(/\\/g, '\\\\')
           .replace(/"/g, '\\"');
         return `"${shortenedStyle}"`;
       })
