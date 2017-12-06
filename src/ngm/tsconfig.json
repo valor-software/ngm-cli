@@ -16,9 +16,6 @@
     "lib": ["dom", "es6"],
     "typeRoots": ["../../node_modules/@types"],
     "types": ["node", "webpack"],
-    "baseUrl": "",
-    "paths": {
-      "npm-submodules": ["../../dist/npm-submodules"]
-    }
+    "baseUrl": ""
   }
 }

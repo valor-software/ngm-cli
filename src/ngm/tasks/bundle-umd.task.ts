@@ -1,5 +1,5 @@
 import path = require('path');
-import { ROOT } from 'npm-submodules';
+import { ROOT } from '../utils';
 import { getWebpackConfig } from '../models/webpack-umd.config';
 const webpack = require('webpack');
 

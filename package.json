@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/valor-software/npm-submodules#readme",
   "peerDependencies": {
-    "npm-submodules": "^0.6.1",
     "@angular/compiler-cli": ">=4.0.0",
     "awesome-typescript-loader": ">=3.0.0",
     "node-sass": ">=4.0.0",
@@ -66,7 +65,6 @@
     "meow": "3.7.0",
     "node-sass": "^4.5.3",
     "node-sass-tilde-importer": "1.0.0",
-    "npm-submodules": "0.6.1",
     "read-pkg": "2.0.0",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.2",
