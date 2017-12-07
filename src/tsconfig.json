@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/ngm-cli",
+    "outDir": "../dist",
     "module": "commonjs",
     "target": "es6",
     "declaration" :true,

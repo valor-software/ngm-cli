@@ -1,4 +1,4 @@
-import { bundleUmd } from '../tasks/bundle-umd.task';
+import { bundleUmd } from '../tasks';
 
 // build -p e2e/ngm-single/src --main index.ts
 
@@ -14,7 +14,7 @@ bundleUmd({
   src: opt.src,
   dist: opt.dist,
   name: opt.pkg.name,
-  tsconfig: opt.tsconfig,
+  tsconfig: opt.tsconfig.path,
   main,
   minify: false
 });

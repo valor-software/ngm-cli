@@ -4,13 +4,11 @@
   "private": true,
   "description": "Simple way to manage typescipt and angular2 submodules from one repository",
   "scripts": {
-    "tbuild": "node dist/tsm-cli/bin/tsm-cli.js build -p src",
-    "tlink": "node dist/tsm-cli/bin/tsm-cli.js link -p src",
-    "tpublish": "node dist/tsm-cli/bin/tsm-cli.js publish -p src --yolo",
     "build": "tsm build -p src --verbose",
     "link": "tsm link -p src --verbose",
+    "publish": "tsm publish -p src --yolo",
     "test": "echo 'all good, move on ;)'",
-    "e2e-tsm": "node dist/test/e2e_runner.js",
+    "e2e-tsm": "node dist/test/e2e.js",
     "e2e": "echo 'dont touch it'"
   },
   "repository": {
