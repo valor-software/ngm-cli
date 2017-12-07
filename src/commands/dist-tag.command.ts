@@ -1,7 +1,7 @@
 const execa = require('execa');
 import Listr = require('listr');
 import { npmDistTag } from '../tasks';
-import { findSubmodules } from '../utils';
+import { findSubmodules } from '../utils/index';
 
 export function npmDistTagRun(cli) {
   const {project, verbose, yarn} = cli.flags;

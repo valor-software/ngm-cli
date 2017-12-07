@@ -4,13 +4,11 @@
   "private": true,
   "description": "Simple way to manage typescipt and angular2 submodules from one repository",
   "scripts": {
-    "tbuild": "node dist/tsm-cli/bin/tsm-cli.js build -p src",
-    "tlink": "node dist/tsm-cli/bin/tsm-cli.js link -p src",
-    "tpublish": "node dist/tsm-cli/bin/tsm-cli.js publish -p src --yolo",
     "build": "tsm build -p src --verbose",
     "link": "tsm link -p src --verbose",
+    "publish": "tsm publish -p src --yolo",
     "test": "echo 'all good, move on ;)'",
-    "e2e-tsm": "node dist/test/e2e_runner.js",
+    "e2e-tsm": "node dist/test/e2e.js",
     "e2e": "echo 'dont touch it'"
   },
   "repository": {
@@ -32,7 +30,6 @@
   },
   "homepage": "https://github.com/valor-software/npm-submodules#readme",
   "peerDependencies": {
-    "npm-submodules": "^0.6.1",
     "@angular/compiler-cli": ">=4.0.0",
     "awesome-typescript-loader": ">=3.0.0",
     "node-sass": ">=4.0.0",
@@ -66,7 +63,6 @@
     "meow": "3.7.0",
     "node-sass": "^4.5.3",
     "node-sass-tilde-importer": "1.0.0",
-    "npm-submodules": "0.6.1",
     "read-pkg": "2.0.0",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.2",

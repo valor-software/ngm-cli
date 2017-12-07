@@ -6,8 +6,8 @@ const Listr = require('listr');
 const cpy = require('cpy');
 const del = require('del');
 
-import { buildPkgs, findSubmodules, tasksWatch } from 'npm-submodules';
-import { build, bundleUmd } from '../tasks';
+import { findSubmodules, tasksWatch } from '../utils';
+import { build, bundleUmd, buildPkgs } from '../tasks';
 import { inlineResources } from '../helpers/inline-resources';
 
 export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {

@@ -1,9 +1,0 @@
-{
-  "name": "tsm-cli",
-  "bin": {
-    "tsm": "bin/tsm-cli.js"
-  },
-  "dependencies": {
-    "npm-submodules": "*"
-  }
-}

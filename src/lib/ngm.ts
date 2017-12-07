@@ -1,5 +1,4 @@
-import {npmLinkRun, npmVersionRun, npmPublishRun, npmDistTagRun} from 'npm-submodules';
-import { buildTsRun, buildCommand } from '../commands';
+import { buildTsRun, buildCommand, npmLinkRun, npmVersionRun, npmPublishRun, npmDistTagRun } from '../commands';
 
 // command - string, cli.inputs[0]
 // cli - meow object

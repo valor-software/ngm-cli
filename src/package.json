@@ -1,9 +1,13 @@
 {
-  "name": "npm-submodules",
-  "main": "index.js",
-  "typings": "index.d.ts",
-  "module": "index.js",
+  "name": "ngm-cli",
+  "bin": {
+    "ngm": "bin/ngm-cli.js"
+  },
   "dependencies": {
+    "@angular/compiler-cli": "*",
+    "awesome-typescript-loader": "*",
+    "node-sass": "*",
+    "node-sass-tilde-importer": "*",
     "chalk": "*",
     "cpy": "*",
     "del": "*",

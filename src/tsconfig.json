@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/tsm-cli",
+    "outDir": "../dist",
     "module": "commonjs",
     "target": "es6",
     "declaration" :true,
-    "sourceMap": false,
+    "inlineSourceMap": true,
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": false,
@@ -15,10 +15,7 @@
     "removeComments": false,
     "lib": ["dom", "es6"],
     "typeRoots": ["../../node_modules/@types"],
-    "types": ["node"],
-    "baseUrl": "",
-    "paths": {
-      "npm-submodules": ["../../dist/npm-submodules"]
-    }
+    "types": ["node", "webpack"],
+    "baseUrl": ""
   }
 }
