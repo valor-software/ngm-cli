@@ -156,8 +156,32 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
 }
 
 export function buildTsRun(cli) {
-  const {project, watch, verbose, clean, local, skipBundles} = cli.flags;
-  let main = cli.flags.main || 'index.ts';
+  const config = cli.flags.config ? require(path.resolve(cli.flags.config)) : {};
+  let {src, entryPoints, watch, verbose, clean, local, skipBundles} = config;
+  const main = cli.flags.main || 'index.ts';
+  const project = cli.flags.project || src;
+  verbose = cli.flags.verbose || verbose;
+  watch = cli.flags.watch || watch;
+  clean = cli.flags.clean || clean;
+  skipBundles = cli.flags.skipBundles || skipBundles;
+
+  if (!project && (!entryPoints || entryPoints.length)) {
+    console.error('Please provide path to your projects source folder, `-p DIR` or specify `src` or `entryPoints` in config');
+    process.exit(1);
+  }
+
+  if (entryPoints && entryPoints.length) {
+    const commands = [];
+    entryPoints.forEach((entryPoint: string) => {
+      commands.push({
+        title: `Build ${entryPoint}`,
+        task: () => buildCommand({project: entryPoint, verbose, clean, local, main, watch, skipBundles})
+      })
+    });
+    const command = Promise.resolve().then(() => new Listr(commands, {renderer: verbose ? 'verbose' : 'default'}));
+    return command.then(tasks => tasksWatch({project: entryPoints, tasks, watch, paths: entryPoints}));
+  }
+
   return buildCommand({project, verbose, clean, local, main, watch, skipBundles})
-    .then(tasks => tasksWatch({project, tasks, watch}));
+    .then(tasks => tasksWatch({project, tasks, watch, paths: null}));
 }
