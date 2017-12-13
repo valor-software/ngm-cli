@@ -1,7 +1,7 @@
 import chokidar = require('chokidar');
 import path = require('path');
 // todo: use observables?
-export function tasksWatch({project, tasks, watch, paths}){
+export function tasksWatch({project, taskQueue, watch, paths}){
   let isRunning = false;
   let changedModule: number;
 
@@ -24,10 +24,10 @@ export function tasksWatch({project, tasks, watch, paths}){
     }
 
     isRunning = true;
-    tasks.tasks.forEach((task: any, i: number) => {
+    taskQueue.tasks.forEach((task: any, i: number) => {
       task.skip = () => changedModule && i !== changedModule;
     });
-    return tasks.run()
+    return taskQueue.run()
       .then(() => {
         console.log(`\n-------------------------------------\n`);
         isRunning = false;

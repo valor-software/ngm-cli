@@ -5,6 +5,7 @@ import path = require('path');
 const Listr = require('listr');
 const cpy = require('cpy');
 const del = require('del');
+const fs = require('fs');
 
 import { findSubmodules, tasksWatch } from '../utils';
 import { build, bundleUmd, buildPkgs } from '../tasks';
@@ -114,14 +115,27 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Bundling ${opt.pkg.name}`,
-            task: () => bundleUmd({
-              main,
-              src: opt.tmp,
-              dist: opt.dist,
-              name: opt.pkg.name,
-              tsconfig: opt.tsconfig.path,
-              minify: false
-            })
+            task: () => {
+              if (Array.isArray(main) && main.length) {
+                return Promise.all(main.map(entryPoint => bundleUmd({
+                  main: entryPoint,
+                  src: opt.tmp,
+                  dist: opt.dist,
+                  name: entryPoint.replace('.ts', ''),
+                  tsconfig: opt.tsconfig.path,
+                  minify: false
+                })))
+              }
+
+              return bundleUmd({
+                main,
+                src: opt.tmp,
+                dist: opt.dist,
+                name: opt.pkg.name,
+                tsconfig: opt.tsconfig.path,
+                minify: false
+              })
+            }
           }))
         ),
         skip: () => watch || skipBundles
@@ -131,14 +145,27 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Bundling ${opt.pkg.name}`,
-            task: () => bundleUmd({
-              main,
-              src: opt.tmp,
-              dist: opt.dist,
-              name: opt.pkg.name,
-              tsconfig: opt.tsconfig.path,
-              minify: true
-            })
+            task: () => {
+              if (Array.isArray(main) && main.length) {
+                return Promise.all(main.map(entryPoint => bundleUmd({
+                  main: entryPoint,
+                  src: opt.tmp,
+                  dist: opt.dist,
+                  name: entryPoint.replace('.ts', ''),
+                  tsconfig: opt.tsconfig.path,
+                  minify: true
+                })))
+              }
+
+              return bundleUmd({
+                main,
+                src: opt.tmp,
+                dist: opt.dist,
+                name: opt.pkg.name,
+                tsconfig: opt.tsconfig.path,
+                minify: true
+              })
+            }
           }))
         ),
         skip: () => watch || skipBundles
@@ -156,32 +183,33 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
 }
 
 export function buildTsRun(cli) {
-  const config = cli.flags.config ? require(path.resolve(cli.flags.config)) : {};
-  let {src, entryPoints, watch, verbose, clean, local, skipBundles} = config;
-  const main = cli.flags.main || 'index.ts';
+  const config = cli.flags.config ? JSON.parse(fs.readFileSync(path.resolve(cli.flags.config), 'utf8')) : {};
+  let {src, main, modules,  watch, verbose, clean, local, skipBundles} = config;
   const project = cli.flags.project || src;
+  main = cli.flags.main || main || 'index.ts';
   verbose = cli.flags.verbose || verbose;
   watch = cli.flags.watch || watch;
   clean = cli.flags.clean || clean;
   skipBundles = cli.flags.skipBundles || skipBundles;
+  const modulePaths = modules ? modules.map(module => module.src) : [];
 
-  if (!project && (!entryPoints || entryPoints.length)) {
-    console.error('Please provide path to your projects source folder, `-p DIR` or specify `src` or `entryPoints` in config');
+  if (!project && !modulePaths) {
+    console.error('Please provide path to your projects source folder, `-p DIR` or specify `src` or `modules` in config');
     process.exit(1);
   }
 
-  if (entryPoints && entryPoints.length) {
-    const commands = [];
-    entryPoints.forEach((entryPoint: string) => {
-      commands.push({
-        title: `Build ${entryPoint}`,
-        task: () => buildCommand({project: entryPoint, verbose, clean, local, main, watch, skipBundles})
-      })
+  if (modulePaths.length) {
+    const commands = modules.map((module: any) => {
+      return {
+        title: `Build ${module.src}`,
+        task: () => buildCommand({project: module.src, verbose, clean, local, main: module.entryPoints, watch, skipBundles})
+      }
     });
-    const command = Promise.resolve().then(() => new Listr(commands, {renderer: verbose ? 'verbose' : 'default'}));
-    return command.then(tasks => tasksWatch({project: entryPoints, tasks, watch, paths: entryPoints}));
+
+    const taskQueue = new Listr(commands, {renderer: verbose ? 'verbose' : 'default'});
+    return tasksWatch({project: modulePaths, taskQueue, watch, paths: modulePaths});
   }
 
   return buildCommand({project, verbose, clean, local, main, watch, skipBundles})
-    .then(tasks => tasksWatch({project, tasks, watch, paths: null}));
+    .then(taskQueue => tasksWatch({project, taskQueue, watch, paths: null}));
 }
