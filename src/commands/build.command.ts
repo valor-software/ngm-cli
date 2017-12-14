@@ -8,8 +8,9 @@ const del = require('del');
 const fs = require('fs');
 
 import { findSubmodules, tasksWatch } from '../utils';
-import { build, bundleUmd, buildPkgs } from '../tasks';
+import { build, bundleUmd, buildPkgs, bundleEs2015 } from '../tasks';
 import { inlineResources } from '../helpers/inline-resources';
+
 
 export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {
   // 1. clean dist folders
@@ -169,6 +170,37 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
           }))
         ),
         skip: () => watch || skipBundles
+      },
+      {
+        title: 'Bundling es2015 version',
+        task: () => new Listr(
+          opts.map(opt => ({
+            title: `Bundling ${opt.pkg.name}`,
+            task: () => {
+              const tsconfig = JSON.parse(fs.readFileSync(path.resolve(opt.tmp, 'tsconfig.json'), 'utf8'));
+              tsconfig.compilerOptions.target = 'es2015';
+              tsconfig.compilerOptions.module = 'es2015';
+              tsconfig.compilerOptions.outDir = 'dist-es2015';
+              fs.writeFileSync(path.resolve(opt.tmp, 'tsconfig.json'), JSON.stringify(tsconfig), 'utf8');
+
+              if (Array.isArray(main) && main.length) {
+                return Promise.all(main.map(entryPoint => bundleEs2015({
+                  input: entryPoint,
+                  dist: opt.dist,
+                  name: entryPoint.replace('.ts', ''),
+                  tmp: opt.tmp
+                })))
+              }
+
+              return bundleEs2015({
+                input: main,
+                dist: opt.dist,
+                name: opt.pkg.name,
+                tmp: opt.tmp
+              });
+            }
+          }))
+        )
       },
       {
         title: 'Clean .tmp folders',
