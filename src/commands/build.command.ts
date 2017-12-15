@@ -12,7 +12,7 @@ import { build, bundleUmd, buildPkgs, bundleEs2015 } from '../tasks';
 import { inlineResources } from '../helpers/inline-resources';
 
 
-export function buildCommand({project, verbose, clean, local, main, watch, skipBundles}) {
+export function buildCommand({project, verbose, clean, local, main, watch, skipBundles, buildEs2015}) {
   // 1. clean dist folders
   // 2.1 merge pkg json
   // todo: 2.2 validate pkg (main, module, types fields)
@@ -118,11 +118,11 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
             title: `Bundling ${opt.pkg.name}`,
             task: () => {
               if (Array.isArray(main) && main.length) {
-                return Promise.all(main.map(entryPoint => bundleUmd({
+                return Promise.all(main.map((entryPoint, i) => bundleUmd({
                   main: entryPoint,
                   src: opt.tmp,
                   dist: opt.dist,
-                  name: entryPoint.replace('.ts', ''),
+                  name: i === 0 ? opt.pkg.name : entryPoint.replace('.ts', ''),
                   tsconfig: opt.tsconfig.path,
                   minify: false
                 })))
@@ -136,7 +136,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
                 tsconfig: opt.tsconfig.path,
                 minify: false
               })
-            }
+            },
+            skip: () => watch || skipBundles
           }))
         ),
         skip: () => watch || skipBundles
@@ -148,11 +149,11 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
             title: `Bundling ${opt.pkg.name}`,
             task: () => {
               if (Array.isArray(main) && main.length) {
-                return Promise.all(main.map(entryPoint => bundleUmd({
+                return Promise.all(main.map((entryPoint, i) => bundleUmd({
                   main: entryPoint,
                   src: opt.tmp,
                   dist: opt.dist,
-                  name: entryPoint.replace('.ts', ''),
+                  name: i === 0 ? opt.pkg.name : entryPoint.replace('.ts', ''),
                   tsconfig: opt.tsconfig.path,
                   minify: true
                 })))
@@ -166,7 +167,8 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
                 tsconfig: opt.tsconfig.path,
                 minify: true
               })
-            }
+            },
+            skip: () => watch || skipBundles
           }))
         ),
         skip: () => watch || skipBundles
@@ -184,10 +186,10 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
               fs.writeFileSync(path.resolve(opt.tmp, 'tsconfig.json'), JSON.stringify(tsconfig), 'utf8');
 
               if (Array.isArray(main) && main.length) {
-                return Promise.all(main.map(entryPoint => bundleEs2015({
+                return Promise.all(main.map((entryPoint, i) => bundleEs2015({
                   input: entryPoint,
                   dist: opt.dist,
-                  name: entryPoint.replace('.ts', ''),
+                  name: i === 0 ? opt.pkg.name : entryPoint.replace('.ts', ''),
                   tmp: opt.tmp
                 })))
               }
@@ -198,9 +200,11 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
                 name: opt.pkg.name,
                 tmp: opt.tmp
               });
-            }
+            },
+            skip: () => !buildEs2015 || watch || skipBundles
           }))
-        )
+        ),
+        skip: () => !buildEs2015 || watch || skipBundles
       },
       {
         title: 'Clean .tmp folders',
@@ -216,13 +220,14 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
 
 export function buildTsRun(cli) {
   const config = cli.flags.config ? JSON.parse(fs.readFileSync(path.resolve(cli.flags.config), 'utf8')) : {};
-  let {src, main, modules,  watch, verbose, clean, local, skipBundles} = config;
+  let {src, main, modules, watch, verbose, clean, local, skipBundles, buildEs2015} = config;
   const project = cli.flags.project || src;
   main = cli.flags.main || main || 'index.ts';
   verbose = cli.flags.verbose || verbose;
   watch = cli.flags.watch || watch;
   clean = cli.flags.clean || clean;
   skipBundles = cli.flags.skipBundles || skipBundles;
+  buildEs2015 = cli.flags.buildEs2015 || buildEs2015;
   const modulePaths = modules ? modules.map(module => module.src) : [];
 
   if (!project && !modulePaths) {
@@ -234,7 +239,7 @@ export function buildTsRun(cli) {
     const commands = modules.map((module: any) => {
       return {
         title: `Build ${module.src}`,
-        task: () => buildCommand({project: module.src, verbose, clean, local, main: module.entryPoints, watch, skipBundles})
+        task: () => buildCommand({project: module.src, verbose, clean, local, main: module.entryPoints, watch, skipBundles, buildEs2015})
       }
     });
 
@@ -242,6 +247,6 @@ export function buildTsRun(cli) {
     return tasksWatch({project: modulePaths, taskQueue, watch, paths: modulePaths});
   }
 
-  return buildCommand({project, verbose, clean, local, main, watch, skipBundles})
+  return buildCommand({project, verbose, clean, local, main, watch, skipBundles, buildEs2015})
     .then(taskQueue => tasksWatch({project, taskQueue, watch, paths: null}));
 }
