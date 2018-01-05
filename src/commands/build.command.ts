@@ -86,7 +86,12 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
         task: () => new Listr(
           opts.map(opt => ({
             title: `Building ${opt.pkg.name} (${opt.src})`,
-            task: () => build(opt.tmp)
+            task: () => watch ?
+              build(opt.tmp) :
+              build(opt.tmp).catch(error => {
+                console.log(error.toString());
+                process.exit(1);
+              })
           }))
         )
       },
