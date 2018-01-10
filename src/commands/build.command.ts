@@ -97,7 +97,7 @@ export function buildCommand({project, verbose, clean, local, main, watch, skipB
       },
       {
         title: 'Copy assets to dist folder',
-        skip: () => true,
+        skip: () => false,
         task: () => new Listr(
           opts.map(opt => ({
             title: `Copying ${opt.pkg.name} assets to ${opt.src}`,
