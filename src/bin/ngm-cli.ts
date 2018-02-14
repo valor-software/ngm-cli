@@ -85,6 +85,7 @@ const cli = meow(`
   alias: {
     m: 'message',
     p: 'project',
+    c: 'config',
     w: 'watch',
     v: 'version',
     local: 'use-local-dependencies alias'
@@ -104,10 +105,10 @@ if (cli.input.length === 0) {
 }
 
 // project flag is mandatory for now
-if (!cli.flags.project) {
-  console.error('Please provide path to your projects source folder, `-p DIR` ');
-  process.exit(1);
-}
+// if (!cli.flags.project) {
+//   console.error('Please provide path to your projects source folder, `-p DIR` ');
+//   process.exit(1);
+// }
 
 import { main } from '../lib/ngm';
 
