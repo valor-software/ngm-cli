@@ -1,6 +1,6 @@
 {
   "name": "base-npm-submodules",
-  "version": "0.8.5",
+  "version": "0.9.0",
   "private": true,
   "description": "Simple way to manage typescipt and angular2 submodules from one repository",
   "scripts": {
