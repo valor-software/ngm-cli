@@ -98,17 +98,21 @@ const cli = meow(`
     },
     watch: {
       type: 'boolean',
-      alias: 'w'
+      alias: 'w',
+      default: false
     },
     version: {
       type: 'boolean',
-      alias: 'c'
+      alias: 'c',
+      default: false
     },
     local: {
-      type: 'boolean'
+      type: 'boolean',
+      default: false
     },
     verbose: {
-      type: 'boolean'
+      type: 'boolean',
+      default: true
     }
   }
 });
