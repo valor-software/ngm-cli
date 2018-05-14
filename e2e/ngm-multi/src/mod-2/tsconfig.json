@@ -19,6 +19,8 @@
     "node_modules"
   ],
   "angularCompilerOptions": {
-    "genDir": "../../temp/mod-2/factories"
+    "genDir": "../../temp/mod-2/factories",
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
   }
 }

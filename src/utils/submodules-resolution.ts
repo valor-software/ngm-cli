@@ -20,7 +20,8 @@ const _tmp = '.tmp';
  */
 export function findSubmodules(project: string, options?: { local: boolean }) {
   return listDirs(project)
-    .then(dirs => orderByCrossDeps(dirs
+    .then(dirs => orderByCrossDeps(
+      dirs
       .filter(dir => isModuleRoot(dir))
       .map(dir => ({dir, tsconfig: tsconfig.loadSync(dir)}))
       .map(opt => resolveOptions(project, opt)))

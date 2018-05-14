@@ -1,7 +1,6 @@
 {
-  "name": "base-npm-submodules",
-  "version": "1.0.1",
-  "private": true,
+  "name": "ngm-cli",
+  "version": "1.0.3",
   "description": "Simple way to manage angular submodules in one repository",
   "bin": {
     "ngm": "bin/ngm-cli.js"
@@ -23,7 +22,7 @@
     "node",
     "typescript",
     "angular",
-    "angular2",
+    "angular",
     "angularcli"
   ],
   "author": "Dmitriy Shekhovtsov <valorkin@gmail.com> (https://twitter.com/valorkin)",

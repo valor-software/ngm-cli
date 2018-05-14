@@ -27,18 +27,10 @@ export function bundleUmd({src, dist, name, main, tsconfig, minify}) {
   });
 
   if (minify) {
-    config.plugins.unshift(new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }));
+    config.optimization.minimize = true;
   }
 
   const webpackCompiler = webpack(config);
-
-  const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-
-  webpackCompiler.apply(new ProgressPlugin({profile: false}));
 
   return new Promise((resolve, reject) => {
     webpackCompiler.run((err, stats) => {

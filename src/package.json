@@ -3,9 +3,13 @@
   "bin": {
     "ngm": "bin/ngm-cli.js"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@angular/compiler-cli": "*",
     "awesome-typescript-loader": "*",
+    "webpack": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
     "node-sass": "*",
     "node-sass-tilde-importer": "*",
     "chalk": "*",
@@ -25,8 +29,6 @@
     "stream-to-observable": "*",
     "tsconfig": "*",
     "update-notifier": "*",
-    "write-pkg": "*",
-    "webpack": "*",
-    "typescript": "*"
+    "write-pkg": "*"
   }
 }

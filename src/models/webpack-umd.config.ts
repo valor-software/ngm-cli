@@ -1,8 +1,9 @@
 import webpack = require('webpack');
-const  TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
+// const  TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 
 export function getWebpackConfig(config) {
   return {
+    mode: 'production',
     devtool: 'source-map',
 
     resolve: {
@@ -26,15 +27,15 @@ export function getWebpackConfig(config) {
       rules: [
         {
           test: /\.ts$/,
-          loader: `awesome-typescript-loader`,
+          loader: `ts-loader`,
           exclude: [/\.e2e\.ts$/],
-          query: {
+          options: {
+            transpileOnly: true,
+            configFile: config.tsconfig,
             compilerOptions: {
               declaration: false,
               emitDecoratorMetadata: false
             },
-            transpileOnly: true,
-            configFileName: config.tsconfig
           }
         },
         // in main, load css as raw text
@@ -60,13 +61,17 @@ export function getWebpackConfig(config) {
     },
 
     plugins: [
-      new TsConfigPathsPlugin(),
+      // new TsConfigPathsPlugin(),
       // fix the warning in ./~/@angular/core/src/linker/system_js_ng_module_factory_loader.js
       new webpack.ContextReplacementPlugin(
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
         config.root
       )
     ],
+
+    optimization: {
+      minimize: false
+    },
     // Hide webpack output because its noisy.
     // noInfo: true,
     // Also prevent chunk and module display output, cleaner look. Only emit errors.

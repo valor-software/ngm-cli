@@ -82,13 +82,34 @@ const cli = meow(`
     ----------------------------------------------------------------
     
 `, {
-  alias: {
-    m: 'message',
-    p: 'project',
-    c: 'config',
-    w: 'watch',
-    v: 'version',
-    local: 'use-local-dependencies alias'
+  flags: {
+    message: {
+      type: 'string',
+      alias: 'm'
+    },
+    project: {
+      type: 'string',
+      alias: 'p',
+      default: 'src'
+    },
+    config: {
+      type: 'string',
+      alias: 'c'
+    },
+    watch: {
+      type: 'boolean',
+      alias: 'w'
+    },
+    version: {
+      type: 'boolean',
+      alias: 'c'
+    },
+    local: {
+      type: 'boolean'
+    },
+    verbose: {
+      type: 'boolean'
+    }
   }
 });
 
