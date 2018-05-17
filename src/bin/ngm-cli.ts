@@ -145,7 +145,7 @@ Promise
     return main(cli.input[0], cli);
   })
   .catch(err => {
-    console.error(`\n` && err.stderr || '');
+    console.error(`\n`, err && err.stderr || '');
     console.error(`\n`, err);
     process.exit(1);
   });

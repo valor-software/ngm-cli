@@ -34,9 +34,8 @@ export function tasksWatch({project, taskQueue, watch, paths}){
       })
       .catch(err => {
         if (err) {
-          console.error(`\n${err.message}`);
+          console.error(err);
         }
-        console.error()
         isRunning = false;
       });
   }
