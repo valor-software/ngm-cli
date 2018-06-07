@@ -31,11 +31,7 @@ export function getWebpackConfig(config) {
           exclude: [/\.e2e\.ts$/],
           options: {
             transpileOnly: true,
-            configFile: config.tsconfig,
-            compilerOptions: {
-              declaration: false,
-              emitDecoratorMetadata: false
-            },
+            configFile: config.tsconfig
           }
         },
         // in main, load css as raw text
