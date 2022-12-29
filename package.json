@@ -57,11 +57,11 @@
     "semver": "5.5.0",
     "split": "1.0.1",
     "stream-to-observable": "0.2.0",
-    "ts-loader": "4.3.0",
+    "ts-loader": "9.4.2",
     "tsconfig": "7.0.0",
     "typescript": "~2.7.2",
     "update-notifier": "2.5.0",
-    "webpack": "4.6.0",
+    "webpack": "5.75.0",
     "write-pkg": "3.1.0"
   },
   "devDependencies": {
